@@ -1,14 +1,7 @@
-import { Redirect } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
-export default function Index() {
-  const user = null;
-
-  if (!user) {
-    return <Redirect href="/login" />;
-  }
-
+export default function HomeScreen() {
   return (
     <View
       style={{
@@ -17,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Wrong Place</Text>
+      <Text>Profile</Text>
     </View>
   );
 }
