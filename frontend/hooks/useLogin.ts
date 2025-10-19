@@ -4,11 +4,14 @@ import { supabase } from "@/lib/supabase";
 const useLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
 
   const signInWithEmail = async () => {
+    setErrorMessage("");
+    setInfoMessage("");
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
@@ -20,7 +23,14 @@ const useLogin = () => {
     setLoading(false);
   };
   const signUpWithEmail = async () => {
+    setErrorMessage("");
+    setInfoMessage("");
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      return;
+    }
     setLoading(true);
+
     const {
       data: { session },
       error,
@@ -38,6 +48,8 @@ const useLogin = () => {
     setEmail,
     password,
     setPassword,
+    confirmPassword,
+    setConfirmPassword,
     loading,
     errorMessage,
     infoMessage,
