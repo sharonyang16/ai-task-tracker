@@ -1,8 +1,11 @@
 import React from "react";
 import { Stack } from "expo-router";
+import useSession from "@/hooks/useSession";
 
 export default function RootLayout() {
-  const isLoggedIn = false;
+  const { session } = useSession();
+  const isLoggedIn = session !== null;
+
   return (
     <Stack>
       <Stack.Protected guard={isLoggedIn}>

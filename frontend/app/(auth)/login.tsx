@@ -1,6 +1,6 @@
 import React from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
-import useLogin from "@/hooks/useLogin";
+import { Button, Text, TextInput, View } from "react-native";
+import useAuth from "@/hooks/useAuth";
 import styles from "../styles/auth.styles";
 import Banner from "@/components/banner";
 
@@ -14,7 +14,7 @@ export default function LoginScreen() {
     errorMessage,
     infoMessage,
     signInWithEmail,
-  } = useLogin();
+  } = useAuth();
 
   return (
     <View

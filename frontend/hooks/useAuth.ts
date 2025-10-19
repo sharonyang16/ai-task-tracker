@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-const useLogin = () => {
+const useAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -58,4 +58,4 @@ const useLogin = () => {
   };
 };
 
-export default useLogin;
+export default useAuth;
