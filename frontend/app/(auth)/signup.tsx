@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
+import { Button, Text, TextInput, View } from "react-native";
 import useLogin from "@/hooks/useLogin";
 import styles from "../styles/auth.styles";
 import Banner from "@/components/banner";
