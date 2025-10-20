@@ -3,9 +3,11 @@ from fastapi import APIRouter, Path
 
 router = APIRouter(prefix="/users", tags=["users"])
 
+
 @router.get("/users/")
 def get_users():
     return [{"username": "john"}, {"username": "todd"}]
+
 
 @router.get("/user/{username}/")
 async def read_path(
