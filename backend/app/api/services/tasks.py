@@ -12,4 +12,4 @@ def get_tasks(uuid):
             .execute()
         ).data
 
-    return response
+    return response.data
