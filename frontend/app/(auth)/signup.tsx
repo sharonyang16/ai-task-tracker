@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import useAuth from "@/hooks/useAuth";
-import styles from "../styles/auth.styles";
+import styles from "@/styles/auth.styles";
 import Banner from "@/components/banner";
 
 export default function SignUpScreen() {
