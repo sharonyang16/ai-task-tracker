@@ -4,8 +4,16 @@ from ..services.recommendations import get_recommendations
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
-@router.get("/get-recommendation/{taskId}/")
+
+@router.get("/recommendations/{taskId}/")
 async def read_path(
-    taskId: Annotated[int, Path(title="The id of the task sub-task recommendations are being generated for.")],
+    taskId: Annotated[
+        int,
+        Path(
+            title="The id of the task sub-task recommendations are being generated for."
+        ),
+    ],
 ):
-    return {"taskId": taskId, "recommendations": get_recommendations("Build a portfolio website")}
+    return {
+        "recommendations": get_recommendations(taskId),
+    }
