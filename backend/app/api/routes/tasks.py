@@ -5,10 +5,10 @@ from fastapi import APIRouter, Path
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
-@router.get("/tasks/{username}/")
+@router.get("/tasks/{uuid}/")
 async def read_path(
-    username: Annotated[
-        str, Path(title="The username of who created the tasks to get.")
+    uuid: Annotated[
+        str, Path(title="The uuid of the user who created the tasks to get.")
     ],
 ):
-    return get_tasks(username)
+    return get_tasks(uuid)
