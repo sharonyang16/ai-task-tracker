@@ -11,10 +11,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#000000",
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 600,
-  },
 });
 
 export default styles;
