@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 
 export default function HomeScreen() {
   const { user } = useAuth();
-  console.log(user);
+
   return (
     <View
       style={{
