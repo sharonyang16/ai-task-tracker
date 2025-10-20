@@ -15,6 +15,5 @@ async def read_path(
     ],
 ):
     return {
-        "taskId": taskId,
-        "recommendations": get_recommendations("Build a portfolio website"),
+        "recommendations": get_recommendations(taskId),
     }
