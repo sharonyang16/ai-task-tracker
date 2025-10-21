@@ -8,8 +8,6 @@ const signUp = async (username: string, password: string) => {
     password,
   });
 
-  console.log(res);
-
   return res;
 };
 
@@ -23,11 +21,15 @@ const login = async (username: string, password: string) => {
 };
 
 const logout = async (bearerToken: string) => {
-  const res = await api.post(`${USERS_API_URL}/logout`, {
-    headers: {
-      Authorization: bearerToken,
-    },
-  });
+  const res = await api.post(
+    `${USERS_API_URL}/logout`,
+    {},
+    {
+      headers: {
+        Authorization: bearerToken,
+      },
+    }
+  );
 
   return res;
 };

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
+import { AxiosError } from "axios";
 import { useAuthContext } from "@/context/auth-context";
 import { signUp, login, logout } from "@/services/user-services";
 
@@ -11,7 +11,7 @@ const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
 
-  const { setUser } = useAuthContext();
+  const { setUser, session, setSession } = useAuthContext();
 
   const handleSignUp = async () => {
     setErrorMessage("");
@@ -25,25 +25,46 @@ const useAuth = () => {
 
     try {
       const {
-        data: { user },
+        data: { user, session },
       } = await signUp(email, password);
       setUser(user);
+      setSession(session);
     } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
+      if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
     }
 
     setLoading(false);
   };
 
   const handleLogin = async () => {
+    setErrorMessage("");
+    setInfoMessage("");
 
-  }
+    setLoading(true);
+
+    try {
+      const {
+        data: { user, session },
+      } = await login(email, password);
+      setUser(user);
+      setSession(session);
+    } catch (e) {
+      if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
+    }
+
+    setLoading(false);
+  };
 
   const signOut = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signOut();
+    try {
+      await logout(session?.access_token || "");
+    } catch {
+      // do nothing
+    }
 
-    if (error) setErrorMessage(error.message);
+    setUser(null);
+    setSession(null);
     setLoading(false);
   };
 
