@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import { useAuthContext } from "@/context/auth-context";
-import { signUp, login, logout } from "@/services/user-services";
+import { signUp, login, logout, checkSession } from "@/services/user-services";
+import useSecureStorage from "@/lib/secure-storage/secure-storage";
 
 const useAuth = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,30 @@ const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
 
+  const { saveSession, getSessionTokens, deleteSession } = useSecureStorage();
+
   const { setUser, session, setSession } = useAuthContext();
+
+  useEffect(() => {
+    const attemptSignIn = async () => {
+      const { access } = await getSessionTokens();
+      if (typeof access === "string") {
+        try {
+          const {
+            data: { user },
+          } = await checkSession(access);
+          setUser(user);
+        } catch (e) {
+          if (e instanceof AxiosError) {
+            setErrorMessage(e.response?.data.message);
+            deleteSession();
+          }
+        }
+      }
+    };
+
+    attemptSignIn();
+  }, []);
 
   const handleSignUp = async () => {
     setErrorMessage("");
@@ -29,6 +53,7 @@ const useAuth = () => {
       } = await signUp(email, password);
       setUser(user);
       setSession(session);
+      saveSession(session);
     } catch (e) {
       if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
     }
@@ -48,6 +73,7 @@ const useAuth = () => {
       } = await login(email, password);
       setUser(user);
       setSession(session);
+      saveSession(session);
     } catch (e) {
       if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
     }
@@ -58,11 +84,13 @@ const useAuth = () => {
   const signOut = async () => {
     setLoading(true);
     try {
-      await logout(session?.access_token || "");
+      const { access: local_token } = await getSessionTokens();
+      const token = session?.access_token ?? local_token;
+      await logout(token || "");
     } catch {
       // do nothing
     }
-
+    await deleteSession();
     setUser(null);
     setSession(null);
     setLoading(false);
