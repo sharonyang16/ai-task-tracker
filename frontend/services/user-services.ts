@@ -4,11 +4,13 @@ const USERS_API_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}/users`;
 
 const signUp = async (username: string, password: string) => {
   const res = await api.post(`${USERS_API_URL}/signup`, {
-    username: username,
-    password: password,
+    username,
+    password,
   });
 
-  return res.data;
+  console.log(res);
+
+  return res;
 };
 
 const login = async (username: string, password: string) => {
@@ -17,7 +19,7 @@ const login = async (username: string, password: string) => {
     password: password,
   });
 
-  return res.data;
+  return res;
 };
 
 const logout = async (bearerToken: string) => {
@@ -27,7 +29,7 @@ const logout = async (bearerToken: string) => {
     },
   });
 
-  return res.data;
+  return res;
 };
 
 export { signUp, login, logout };

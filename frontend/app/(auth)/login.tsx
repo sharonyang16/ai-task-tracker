@@ -15,7 +15,7 @@ export default function LoginScreen() {
     loading,
     errorMessage,
     infoMessage,
-    signInWithEmail,
+    handleLogin,
   } = useAuth();
 
   return (
@@ -39,7 +39,7 @@ export default function LoginScreen() {
             onChangeText={(text) => setPassword(text)}
             placeholder="your password"
           />
-          <Button title="Submit" onPress={signInWithEmail} disabled={loading} />
+          <Button title="Submit" onPress={handleLogin} disabled={loading} />
         </View>
       </View>
     </SafeAreaView>

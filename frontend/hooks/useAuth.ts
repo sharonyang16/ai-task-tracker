@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuthContext } from "@/context/auth-context";
+import { signUp, login, logout } from "@/services/user-services";
 
 const useAuth = () => {
   const [email, setEmail] = useState("");
@@ -12,52 +13,31 @@ const useAuth = () => {
 
   const { setUser } = useAuthContext();
 
-  useEffect(() => {
-    console.log("happeneing")
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-  }, [setUser]);
-
-  const signInWithEmail = async () => {
+  const handleSignUp = async () => {
     setErrorMessage("");
     setInfoMessage("");
-    setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) setErrorMessage(error.message);
-
-    setLoading(false);
-  };
-
-  const signUpWithEmail = async () => {
-    setErrorMessage("");
-    setInfoMessage("");
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
     setLoading(true);
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({ email: email, password: password });
-
-    if (error) setErrorMessage(error.message);
-
-    if (!session) setInfoMessage("Check your inbox for email verification");
+    try {
+      const {
+        data: { user },
+      } = await signUp(email, password);
+      setUser(user);
+    } catch (e) {
+      if (e instanceof Error) setErrorMessage(e.message);
+    }
 
     setLoading(false);
   };
+
+  const handleLogin = async () => {
+
+  }
 
   const signOut = async () => {
     setLoading(true);
@@ -77,8 +57,8 @@ const useAuth = () => {
     loading,
     errorMessage,
     infoMessage,
-    signUpWithEmail,
-    signInWithEmail,
+    handleSignUp,
+    handleLogin,
     signOut,
   };
 };
