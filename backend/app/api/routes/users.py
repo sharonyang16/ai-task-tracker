@@ -1,13 +1,30 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+
 from ..services.users import supabase_logout, supabase_signup, supabase_login
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
+class AuthRequestBody(BaseModel):
+    username: str
+    password: str
+
+
 @router.post("/signup")
-async def signup(username: str, password: str):
+async def signup(body: AuthRequestBody):
     try:
+        username = body.username
+        password = body.password
+        if not username or not password:
+            return JSONResponse(
+                status_code=400,
+                content={"message": "username and password are required"},
+            )
+
         result = supabase_signup(username, password)
         return result
     except Exception as e:
@@ -18,8 +35,16 @@ async def signup(username: str, password: str):
 
 
 @router.post("/login")
-async def login(username: str, password: str):
+async def login(body: AuthRequestBody):
     try:
+        username = body.username
+        password = body.password
+        if not username or not password:
+            return JSONResponse(
+                status_code=400,
+                content={"message": "username and password are required"},
+            )
+
         result = supabase_login(username, password)
         return result
     except Exception as e:
