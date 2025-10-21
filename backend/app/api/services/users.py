@@ -16,3 +16,8 @@ def supabase_login(username: str, password: str):
 def supabase_logout(bearer_token: str):
     result = supabase.auth.admin.sign_out(bearer_token)
     return result
+
+
+def supabase_session_check(bearer_token: str):
+    result = supabase.auth.get_user(bearer_token)
+    return result
