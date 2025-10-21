@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
+import { AxiosError } from "axios";
 import { useAuthContext } from "@/context/auth-context";
+import { signUp, login, logout } from "@/services/user-services";
 
 const useAuth = () => {
   const [email, setEmail] = useState("");
@@ -10,60 +11,60 @@ const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
 
-  const { setUser } = useAuthContext();
+  const { setUser, session, setSession } = useAuthContext();
 
-  useEffect(() => {
-    console.log("happeneing")
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-  }, [setUser]);
-
-  const signInWithEmail = async () => {
+  const handleSignUp = async () => {
     setErrorMessage("");
     setInfoMessage("");
-    setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) setErrorMessage(error.message);
-
-    setLoading(false);
-  };
-
-  const signUpWithEmail = async () => {
-    setErrorMessage("");
-    setInfoMessage("");
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
     setLoading(true);
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({ email: email, password: password });
+    try {
+      const {
+        data: { user, session },
+      } = await signUp(email, password);
+      setUser(user);
+      setSession(session);
+    } catch (e) {
+      if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
+    }
 
-    if (error) setErrorMessage(error.message);
+    setLoading(false);
+  };
 
-    if (!session) setInfoMessage("Check your inbox for email verification");
+  const handleLogin = async () => {
+    setErrorMessage("");
+    setInfoMessage("");
+
+    setLoading(true);
+
+    try {
+      const {
+        data: { user, session },
+      } = await login(email, password);
+      setUser(user);
+      setSession(session);
+    } catch (e) {
+      if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
+    }
 
     setLoading(false);
   };
 
   const signOut = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signOut();
+    try {
+      await logout(session?.access_token || "");
+    } catch {
+      // do nothing
+    }
 
-    if (error) setErrorMessage(error.message);
+    setUser(null);
+    setSession(null);
     setLoading(false);
   };
 
@@ -77,8 +78,8 @@ const useAuth = () => {
     loading,
     errorMessage,
     infoMessage,
-    signUpWithEmail,
-    signInWithEmail,
+    handleSignUp,
+    handleLogin,
     signOut,
   };
 };

@@ -17,7 +17,7 @@ export default function SignUpScreen() {
     loading,
     errorMessage,
     infoMessage,
-    signUpWithEmail,
+    handleSignUp,
   } = useAuth();
 
   return (
@@ -49,7 +49,7 @@ export default function SignUpScreen() {
             onChangeText={(text) => setConfirmPassword(text)}
             placeholder="confirm password"
           />
-          <Button title="Submit" onPress={signUpWithEmail} disabled={loading} />
+          <Button title="Submit" onPress={handleSignUp} disabled={loading} />
         </View>
       </View>
     </SafeAreaView>

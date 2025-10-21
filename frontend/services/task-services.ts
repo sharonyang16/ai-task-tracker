@@ -7,7 +7,7 @@ const getTasksByUUID = async (uuid: string): Promise<DatabaseTask[]> => {
   const res = await api.get(`${TASKS_API_URL}/tasks/${uuid}`);
 
   if (res.status !== 200) {
-    throw new Error("Error when fetching users");
+    throw new Error("Error when fetching tasks");
   }
 
   return res.data;
