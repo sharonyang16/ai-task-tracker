@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Path, Request
+from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from ..services.users import supabase_logout, supabase_signup, supabase_login
 
