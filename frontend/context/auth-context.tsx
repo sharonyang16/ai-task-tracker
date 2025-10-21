@@ -16,10 +16,10 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function useAuth(): AuthContextType {
+function useAuthContext(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuthContext must be used within an AuthProvider");
   }
   return context;
 }
@@ -30,4 +30,4 @@ const AuthProvider = (props: { children: ReactNode }): ReactElement => {
   return <AuthContext.Provider {...props} value={{ user, setUser }} />;
 };
 
-export { AuthProvider, useAuth };
+export { AuthProvider, useAuthContext };

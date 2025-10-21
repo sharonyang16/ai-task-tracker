@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuthContext } from "@/context/auth-context";
 
 const useAuth = () => {
   const [email, setEmail] = useState("");
@@ -9,10 +10,24 @@ const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
 
+  const { setUser } = useAuthContext();
+
+  useEffect(() => {
+    console.log("happeneing")
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+  }, [setUser]);
+
   const signInWithEmail = async () => {
     setErrorMessage("");
     setInfoMessage("");
     setLoading(true);
+
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -44,6 +59,14 @@ const useAuth = () => {
     setLoading(false);
   };
 
+  const signOut = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+
+    if (error) setErrorMessage(error.message);
+    setLoading(false);
+  };
+
   return {
     email,
     setEmail,
@@ -56,6 +79,7 @@ const useAuth = () => {
     infoMessage,
     signUpWithEmail,
     signInWithEmail,
+    signOut,
   };
 };
 

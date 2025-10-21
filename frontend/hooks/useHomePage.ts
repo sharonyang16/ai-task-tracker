@@ -1,10 +1,10 @@
 import { getTasksByUUID } from "@/services/task-services";
 import { DatabaseTask } from "@/types/tasks";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/context/auth-context";
+import { useAuthContext } from "@/context/auth-context";
 
 const useHomePage = () => {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const [tasks, setTasks] = useState<DatabaseTask[]>([]);
 
   useEffect(() => {

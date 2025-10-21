@@ -1,11 +1,11 @@
 import React from "react";
 import { Stack } from "expo-router";
-import useSession from "@/hooks/useSession";
+import { useAuthContext } from "@/context/auth-context";
 
 export default function Navigator() {
-  const { session } = useSession();
+  const { user } = useAuthContext();
 
-  const isLoggedIn = session !== null;
+  const isLoggedIn = user !== null;
 
   return (
     <Stack>
