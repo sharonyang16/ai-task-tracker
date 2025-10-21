@@ -34,4 +34,14 @@ const logout = async (bearerToken: string) => {
   return res;
 };
 
-export { signUp, login, logout };
+const checkSession = async (bearerToken: string) => {
+  const res = await api.get(`${USERS_API_URL}/check-session`, {
+    headers: {
+      Authorization: bearerToken,
+    },
+  });
+
+  return res;
+};
+
+export { signUp, login, logout, checkSession };
