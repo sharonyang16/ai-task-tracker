@@ -30,7 +30,7 @@ async def login(username: str, password: str):
 
 
 @router.post("/logout")
-async def login(request: Request):
+async def logout(request: Request):
     try:
         bearer_token = request.headers.get("Authorization")
         if not bearer_token:
