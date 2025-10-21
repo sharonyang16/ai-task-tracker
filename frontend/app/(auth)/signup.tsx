@@ -4,6 +4,7 @@ import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
 import Banner from "@/components/banner";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignUpScreen() {
   const {
@@ -20,7 +21,7 @@ export default function SignUpScreen() {
   } = useAuth();
 
   return (
-    <View style={styles.layoutContainer}>
+    <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Sign Up</Text>
       <View style={styles.content}>
         <View style={authStyles.container}>
@@ -51,6 +52,6 @@ export default function SignUpScreen() {
           <Button title="Submit" onPress={signUpWithEmail} disabled={loading} />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

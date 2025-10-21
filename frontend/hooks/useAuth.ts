@@ -22,6 +22,7 @@ const useAuth = () => {
 
     setLoading(false);
   };
+
   const signUpWithEmail = async () => {
     setErrorMessage("");
     setInfoMessage("");

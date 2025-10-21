@@ -9,8 +9,10 @@ type TaskCardProps = {
 
 const TaskCard = ({ task }: TaskCardProps) => {
   return (
-    <View>
+    <View style={{ backgroundColor: "#EAEAEA", padding: 16, borderRadius: 8 }}>
       <Text>{task.title}</Text>
+      {task.description && <Text>{task.description}</Text>}
+      <Text>{task.size}</Text>
     </View>
   );
 };
