@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#000000",
   },
+  checkbox: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
+  },
 });
 
 export default styles;
