@@ -11,6 +11,7 @@ const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
+  const [staySignedIn, setStaySignedIn] = useState(true);
 
   const { saveSession, getSessionTokens, deleteSession } = useSecureStorage();
 
@@ -53,7 +54,8 @@ const useAuth = () => {
       } = await signUp(email, password);
       setUser(user);
       setSession(session);
-      saveSession(session);
+
+      if (staySignedIn) saveSession(session);
     } catch (e) {
       if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
     }
@@ -73,7 +75,8 @@ const useAuth = () => {
       } = await login(email, password);
       setUser(user);
       setSession(session);
-      saveSession(session);
+
+      if (staySignedIn) saveSession(session);
     } catch (e) {
       if (e instanceof AxiosError) setErrorMessage(e.response?.data.message);
     }
@@ -109,6 +112,8 @@ const useAuth = () => {
     handleSignUp,
     handleLogin,
     signOut,
+    staySignedIn,
+    setStaySignedIn,
   };
 };
 
