@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Checkbox } from "expo-checkbox";
+import Banner from "@/components/banner";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
-import Banner from "@/components/banner";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Checkbox } from "expo-checkbox";
 
 export default function LoginScreen() {
   const {
