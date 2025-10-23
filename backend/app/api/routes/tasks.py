@@ -20,6 +20,12 @@ class CreateTaskRequestBody(BaseModel):
     creator: str
     size: TaskSize
 
+    def __iter__(self):
+        yield self.title
+        yield self.description
+        yield self.size
+        yield self.size
+
 
 @router.get("/tasks/{uuid}", status_code=200)
 async def read_path(
@@ -30,13 +36,10 @@ async def read_path(
     return get_tasks(uuid)
 
 
-@router.post("/create-task")
+@router.post("/")
 async def create_task(body: CreateTaskRequestBody):
     try:
-        title = body.title
-        description = body.description
-        creator = body.creator
-        size = body.size
+        title, description, creator, size = body
         if not title or not creator or not size:
             return JSONResponse(
                 status_code=400,
