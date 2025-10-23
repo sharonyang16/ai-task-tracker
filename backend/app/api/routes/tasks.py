@@ -1,5 +1,6 @@
 from typing import Optional
 from ..services.tasks import get_tasks, create_new_task
+from ..services.recommendations import get_recommendations
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -29,7 +30,13 @@ class CreateTaskRequestBody(BaseModel):
 
 @router.get("/")
 async def get_all_tasks():
-    return get_tasks()
+    try:
+        return get_tasks()
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
 
 
 @router.post("/")
@@ -43,6 +50,19 @@ async def create_task(body: CreateTaskRequestBody):
             )
 
         return create_new_task(title, description, creator, size)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/{taskId}/recommendations")
+async def get_subtask_recommendations(taskId: int):
+    try:
+        return {
+            "recommendations": get_recommendations(taskId),
+        }
     except Exception as e:
         return JSONResponse(
             status_code=400,
