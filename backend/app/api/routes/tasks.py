@@ -21,7 +21,7 @@ class CreateTaskRequestBody(BaseModel):
     size: TaskSize
 
 
-@router.get("/tasks/{uuid}/", status_code=200)
+@router.get("/tasks/{uuid}", status_code=200)
 async def read_path(
     uuid: Annotated[
         str, Path(title="The uuid of the user who created the tasks to get.")
@@ -30,7 +30,7 @@ async def read_path(
     return get_tasks(uuid)
 
 
-@router.post("/create-task/")
+@router.post("/create-task")
 async def create_task(body: CreateTaskRequestBody):
     try:
         title = body.title
