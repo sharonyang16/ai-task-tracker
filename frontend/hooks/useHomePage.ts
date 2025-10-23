@@ -1,7 +1,7 @@
-import { getTasksByUUID } from "@/services/task-services";
-import { DatabaseTask } from "@/types/tasks";
 import { useEffect, useState } from "react";
+import { DatabaseTask } from "@/types/tasks";
 import { useAuthContext } from "@/context/auth-context";
+import { getUserTasks } from "@/services/user-services";
 
 const useHomePage = () => {
   const { user } = useAuthContext();
@@ -10,7 +10,7 @@ const useHomePage = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       if (user !== null) {
-        const res = await getTasksByUUID(user.id);
+        const res = await getUserTasks(user.id);
 
         setTasks(res);
       }
