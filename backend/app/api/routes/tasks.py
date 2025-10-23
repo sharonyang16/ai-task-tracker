@@ -1,6 +1,6 @@
-from typing import Annotated, Optional
+from typing import Optional
 from ..services.tasks import get_tasks, create_new_task
-from fastapi import APIRouter, Path
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from enum import Enum
@@ -28,11 +28,7 @@ class CreateTaskRequestBody(BaseModel):
 
 
 @router.get("/tasks/{uuid}", status_code=200)
-async def read_path(
-    uuid: Annotated[
-        str, Path(title="The uuid of the user who created the tasks to get.")
-    ],
-):
+async def read_path(uuid: str):
     return get_tasks(uuid)
 
 
