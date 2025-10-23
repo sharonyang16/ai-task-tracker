@@ -28,7 +28,6 @@ const useAuth = () => {
           setUser(user);
         } catch (e) {
           if (e instanceof AxiosError) {
-            setErrorMessage(e.response?.data.message);
             deleteSession();
           }
         }
@@ -36,6 +35,7 @@ const useAuth = () => {
     };
 
     attemptSignIn();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSignUp = async () => {
