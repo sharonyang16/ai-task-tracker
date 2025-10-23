@@ -12,9 +12,11 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Home</Text>
       <View style={styles.content}>
-        {tasks.map((task) => (
-          <TaskCard task={task} key={task.id} />
-        ))}
+        <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {tasks.map((task) => (
+            <TaskCard task={task} key={task.id} />
+          ))}
+        </View>
       </View>
     </SafeAreaView>
   );
