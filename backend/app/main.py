@@ -28,5 +28,4 @@ app.add_middleware(
 )
 
 app.include_router(users_router)
-app.include_router(recommendations_router)
 app.include_router(tasks_router)
