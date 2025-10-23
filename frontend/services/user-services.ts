@@ -1,4 +1,5 @@
 import api from "@/lib/axios-config";
+import { DatabaseTask } from "@/types/tasks";
 
 const USERS_API_URL = `${process.env.EXPO_PUBLIC_SERVER_URL}/users`;
 
@@ -44,4 +45,14 @@ const checkSession = async (bearerToken: string) => {
   return res;
 };
 
-export { signUp, login, logout, checkSession };
+const getUserTasks = async (uuid: string): Promise<DatabaseTask[]> => {
+  const res = await api.get(`${USERS_API_URL}/${uuid}/tasks`);
+
+  if (res.status !== 200) {
+    throw new Error("Error when fetching tasks");
+  }
+
+  return res.data;
+};
+
+export { signUp, login, logout, checkSession, getUserTasks };
