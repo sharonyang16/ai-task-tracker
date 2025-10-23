@@ -1,6 +1,7 @@
-from typing import Annotated, Optional
+from typing import Optional
 from ..services.tasks import get_tasks, create_new_task
-from fastapi import APIRouter, Path
+from ..services.recommendations import get_recommendations
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from enum import Enum
@@ -20,23 +21,28 @@ class CreateTaskRequestBody(BaseModel):
     creator: str
     size: TaskSize
 
-
-@router.get("/tasks/{uuid}/", status_code=200)
-async def read_path(
-    uuid: Annotated[
-        str, Path(title="The uuid of the user who created the tasks to get.")
-    ],
-):
-    return get_tasks(uuid)
+    def __iter__(self):
+        yield self.title
+        yield self.description
+        yield self.size
+        yield self.size
 
 
-@router.post("/create-task/")
+@router.get("/")
+async def get_all_tasks():
+    try:
+        return get_tasks()
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.post("/")
 async def create_task(body: CreateTaskRequestBody):
     try:
-        title = body.title
-        description = body.description
-        creator = body.creator
-        size = body.size
+        title, description, creator, size = body
         if not title or not creator or not size:
             return JSONResponse(
                 status_code=400,
@@ -44,6 +50,19 @@ async def create_task(body: CreateTaskRequestBody):
             )
 
         return create_new_task(title, description, creator, size)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/{taskId}/recommendations")
+async def get_subtask_recommendations(taskId: int):
+    try:
+        return {
+            "recommendations": get_recommendations(taskId),
+        }
     except Exception as e:
         return JSONResponse(
             status_code=400,

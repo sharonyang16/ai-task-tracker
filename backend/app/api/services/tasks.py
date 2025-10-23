@@ -2,8 +2,8 @@ from .supabase import supabase
 from datetime import date
 
 
-def get_tasks(uuid):
-    response = supabase.from_("tasks").select("*").eq("created_by", uuid).execute()
+def get_tasks():
+    response = supabase.from_("tasks").select("*").execute()
 
     for index, task in enumerate(response.data):
         response.data[index]["sub_tasks"] = (
