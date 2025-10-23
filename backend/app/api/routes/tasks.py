@@ -27,9 +27,9 @@ class CreateTaskRequestBody(BaseModel):
         yield self.size
 
 
-@router.get("/tasks/{uuid}", status_code=200)
-async def read_path(uuid: str):
-    return get_tasks(uuid)
+@router.get("/")
+async def get_all_tasks():
+    return get_tasks()
 
 
 @router.post("/")
