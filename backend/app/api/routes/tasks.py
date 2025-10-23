@@ -29,7 +29,7 @@ class CreateParentTaskRequestBody(CreateTaskRequestBody):
     size: TaskSize
 
     def __iter__(self):
-        super().__iter__(self)
+        yield from super().__iter__()
         yield self.creator
         yield self.size
 
