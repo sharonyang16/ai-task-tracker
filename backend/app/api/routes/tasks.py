@@ -4,6 +4,7 @@ from ..services.tasks import (
     create_new_task,
     create_new_subtask,
     get_task_by_id,
+    update_task_by_id,
 )
 from ..services.recommendations import get_recommendations
 from fastapi import APIRouter
@@ -36,6 +37,27 @@ class CreateParentTaskRequestBody(CreateTaskRequestBody):
     def __iter__(self):
         yield from super().__iter__()
         yield self.creator
+        yield self.size
+
+
+class UpdateTaskRequestBody(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    is_complete: Optional[bool] = None
+
+    def __iter__(self):
+        yield self.title
+        yield self.description
+        yield self.is_complete
+
+
+class UpdateParentTaskRequestBody(UpdateTaskRequestBody):
+    sub_tasks: Optional[list[int]] = None
+    size: Optional[TaskSize] = None
+
+    def __iter__(self):
+        yield from super().__iter__()
+        yield self.sub_tasks
         yield self.size
 
 
@@ -90,6 +112,20 @@ async def create_subtask(taskId: int, body: CreateTaskRequestBody):
 async def get_task(taskId: int):
     try:
         return get_task_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.patch("/{taskId}")
+async def update_task(taskId: int, body: UpdateParentTaskRequestBody):
+    try:
+        title, description, is_complete, sub_tasks, size = body
+        return update_task_by_id(
+            taskId, title, description, is_complete, sub_tasks, size
+        )
     except Exception as e:
         return JSONResponse(
             status_code=400,
