@@ -5,6 +5,7 @@ from ..services.tasks import (
     create_new_subtask,
     get_task_by_id,
     update_task_by_id,
+    update_subtask_by_id,
 )
 from ..services.recommendations import get_recommendations
 from fastapi import APIRouter
@@ -139,6 +140,18 @@ async def get_subtask_recommendations(taskId: int):
         return {
             "recommendations": get_recommendations(taskId),
         }
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.patch("/subtasks/{taskId}")
+async def update_task(taskId: int, body: UpdateTaskRequestBody):
+    try:
+        title, description, is_complete = body
+        return update_subtask_by_id(taskId, title, description, is_complete)
     except Exception as e:
         return JSONResponse(
             status_code=400,

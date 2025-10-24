@@ -97,3 +97,18 @@ def update_task_by_id(taskId, title, description, is_complete, sub_tasks, size):
 
     response = supabase.table("tasks").update(data_to_update).eq("id", taskId).execute()
     return response.data[0]
+
+
+def update_subtask_by_id(taskId, title, description, is_complete):
+    data_to_update = {}
+    if title:
+        data_to_update["title"] = title
+    if description:
+        data_to_update["description"] = description
+    if is_complete is not None:
+        data_to_update["is_complete"] = is_complete
+
+    response = (
+        supabase.table("sub_tasks").update(data_to_update).eq("id", taskId).execute()
+    )
+    return response.data[0]
