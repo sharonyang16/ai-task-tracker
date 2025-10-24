@@ -5,6 +5,7 @@ from ..services.tasks import (
     create_new_subtask,
     get_task_by_id,
     update_task_by_id,
+    get_subtask_by_id,
     update_subtask_by_id,
 )
 from ..services.recommendations import get_recommendations
@@ -91,24 +92,6 @@ async def create_task(body: CreateParentTaskRequestBody):
         )
 
 
-@router.post("/{taskId}/subtask")
-async def create_subtask(taskId: int, body: CreateTaskRequestBody):
-    try:
-        title, description = body
-        if not title:
-            return JSONResponse(
-                status_code=400,
-                content={"message": "title is required"},
-            )
-
-        return create_new_subtask(title, description, taskId)
-    except Exception as e:
-        return JSONResponse(
-            status_code=400,
-            content={"message": str(e)},
-        )
-
-
 @router.get("/{taskId}")
 async def get_task(taskId: int):
     try:
@@ -134,12 +117,28 @@ async def update_task(taskId: int, body: UpdateParentTaskRequestBody):
         )
 
 
-@router.get("/{taskId}/recommendations")
-async def get_subtask_recommendations(taskId: int):
+@router.post("/{taskId}/subtask")
+async def create_subtask(taskId: int, body: CreateTaskRequestBody):
     try:
-        return {
-            "recommendations": get_recommendations(taskId),
-        }
+        title, description = body
+        if not title:
+            return JSONResponse(
+                status_code=400,
+                content={"message": "title is required"},
+            )
+
+        return create_new_subtask(title, description, taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/subtasks/{taskId}")
+async def get_subtask(taskId: int):
+    try:
+        return get_subtask_by_id(taskId)
     except Exception as e:
         return JSONResponse(
             status_code=400,
@@ -148,10 +147,23 @@ async def get_subtask_recommendations(taskId: int):
 
 
 @router.patch("/subtasks/{taskId}")
-async def update_task(taskId: int, body: UpdateTaskRequestBody):
+async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
     try:
         title, description, is_complete = body
         return update_subtask_by_id(taskId, title, description, is_complete)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/{taskId}/recommendations")
+async def get_subtask_recommendations(taskId: int):
+    try:
+        return {
+            "recommendations": get_recommendations(taskId),
+        }
     except Exception as e:
         return JSONResponse(
             status_code=400,
