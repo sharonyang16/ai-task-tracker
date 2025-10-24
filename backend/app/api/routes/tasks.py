@@ -1,5 +1,13 @@
 from typing import Optional
-from ..services.tasks import get_tasks, create_new_task, create_new_subtask
+from ..services.tasks import (
+    get_tasks,
+    create_new_task,
+    create_new_subtask,
+    get_task_by_id,
+    update_task_by_id,
+    get_subtask_by_id,
+    update_subtask_by_id,
+)
 from ..services.recommendations import get_recommendations
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
@@ -34,6 +42,27 @@ class CreateParentTaskRequestBody(CreateTaskRequestBody):
         yield self.size
 
 
+class UpdateTaskRequestBody(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    is_complete: Optional[bool] = None
+
+    def __iter__(self):
+        yield self.title
+        yield self.description
+        yield self.is_complete
+
+
+class UpdateParentTaskRequestBody(UpdateTaskRequestBody):
+    sub_tasks: Optional[list[int]] = None
+    size: Optional[TaskSize] = None
+
+    def __iter__(self):
+        yield from super().__iter__()
+        yield self.sub_tasks
+        yield self.size
+
+
 @router.get("/")
 async def get_all_tasks():
     try:
@@ -63,6 +92,31 @@ async def create_task(body: CreateParentTaskRequestBody):
         )
 
 
+@router.get("/{taskId}")
+async def get_task(taskId: int):
+    try:
+        return get_task_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.patch("/{taskId}")
+async def update_task(taskId: int, body: UpdateParentTaskRequestBody):
+    try:
+        title, description, is_complete, sub_tasks, size = body
+        return update_task_by_id(
+            taskId, title, description, is_complete, sub_tasks, size
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
 @router.post("/{taskId}/subtask")
 async def create_subtask(taskId: int, body: CreateTaskRequestBody):
     try:
@@ -74,6 +128,29 @@ async def create_subtask(taskId: int, body: CreateTaskRequestBody):
             )
 
         return create_new_subtask(title, description, taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/subtasks/{taskId}")
+async def get_subtask(taskId: int):
+    try:
+        return get_subtask_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.patch("/subtasks/{taskId}")
+async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
+    try:
+        title, description, is_complete = body
+        return update_subtask_by_id(taskId, title, description, is_complete)
     except Exception as e:
         return JSONResponse(
             status_code=400,
