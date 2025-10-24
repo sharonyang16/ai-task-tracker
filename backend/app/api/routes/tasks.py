@@ -1,5 +1,10 @@
 from typing import Optional
-from ..services.tasks import get_tasks, create_new_task, create_new_subtask
+from ..services.tasks import (
+    get_tasks,
+    create_new_task,
+    create_new_subtask,
+    get_task_by_id,
+)
 from ..services.recommendations import get_recommendations
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
@@ -74,6 +79,17 @@ async def create_subtask(taskId: int, body: CreateTaskRequestBody):
             )
 
         return create_new_subtask(title, description, taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/{taskId}")
+async def get_task(taskId: int):
+    try:
+        return get_task_by_id(taskId)
     except Exception as e:
         return JSONResponse(
             status_code=400,

@@ -33,7 +33,7 @@ def create_new_task(title, description, creator, size):
         .execute()
     )
 
-    return response.data
+    return response.data[0]
 
 
 def create_new_subtask(title, description, parentId):
@@ -51,9 +51,32 @@ def create_new_subtask(title, description, parentId):
         .execute()
     )
 
-    # Update parent Task 
+    # Update parent Task
     subtask_id = response.data[0].get("id")
-    parent_subtasks_arr =  supabase.table("tasks").select("sub_tasks").eq("id", parentId).execute().data[0].get("sub_tasks")
-    supabase.table("tasks").update({"sub_tasks": [*parent_subtasks_arr, subtask_id]}).eq("id", parentId).execute()
+    parent_subtasks_arr = (
+        supabase.table("tasks")
+        .select("sub_tasks")
+        .eq("id", parentId)
+        .execute()
+        .data[0]
+        .get("sub_tasks")
+    )
+    supabase.table("tasks").update(
+        {"sub_tasks": [*parent_subtasks_arr, subtask_id]}
+    ).eq("id", parentId).execute()
 
-    return response.data
+    return response.data[0]
+
+
+def get_task_by_id(taskId):
+    response = supabase.from_("tasks").select("*").eq("id", taskId).execute()
+
+    for index, task in enumerate(response.data):
+        response.data[index]["sub_tasks"] = (
+            supabase.from_("sub_tasks")
+            .select("*")
+            .eq("parent_task_id", task["id"])
+            .execute()
+        ).data
+
+    return response.data[0]
