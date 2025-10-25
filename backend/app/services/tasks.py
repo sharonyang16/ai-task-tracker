@@ -1,4 +1,4 @@
-from .supabase import supabase
+from app.utils.supabase import supabase
 from datetime import date
 
 

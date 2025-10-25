@@ -1,5 +1,5 @@
 from typing import Optional
-from ..services.tasks import (
+from app.services.tasks import (
     get_tasks,
     create_new_task,
     create_new_subtask,
@@ -8,7 +8,7 @@ from ..services.tasks import (
     get_subtask_by_id,
     update_subtask_by_id,
 )
-from ..services.recommendations import get_recommendations
+from app.services.recommendations import get_recommendations
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
