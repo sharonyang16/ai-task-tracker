@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
-from api.routes.users import router as users_router
-from api.routes.tasks import router as tasks_router
+from app.routes.users import router as users_router
+from app.routes.tasks import router as tasks_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
