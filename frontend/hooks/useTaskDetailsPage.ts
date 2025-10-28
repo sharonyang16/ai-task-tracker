@@ -4,7 +4,7 @@ import { Task } from "@/types/tasks";
 import { useTaskDetailContext } from "@/context/task-detail-context";
 
 const useTasksDetailsPage = (taskId: number) => {
-  const { setTask } = useTaskDetailContext();
+  const { setTask, isEditing } = useTaskDetailContext();
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -27,7 +27,7 @@ const useTasksDetailsPage = (taskId: number) => {
 
     fetchTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditing]);
 };
 
 export default useTasksDetailsPage;

@@ -10,9 +10,14 @@ type TaskCardProps = {
 
 const TaskCard = ({ task }: TaskCardProps) => {
   return (
-    <Link href={`/tasks/${task.id}`} >
+    <Link href={`/tasks/${task.id}`}>
       <View
-        style={{ backgroundColor: "#EAEAEA", padding: 16, borderRadius: 8 }}
+        style={{
+          backgroundColor: "#EAEAEA",
+          padding: 16,
+          borderRadius: 8,
+          width: "100%",
+        }}
       >
         <View
           style={{
