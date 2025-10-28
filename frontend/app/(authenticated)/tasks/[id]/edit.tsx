@@ -1,27 +1,41 @@
 import { useTaskDetailContext } from "@/context/task-detail-context";
+import useTasksDetailsEditPage from "@/hooks/useTaskDetailsEditpage";
+import styles from "@/styles/global.styles";
+import { Task } from "@/types/tasks";
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Text, TextInput } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TaskDetailsEdit() {
   const { task, setIsEditing } = useTaskDetailContext();
-  if (task === null) {
-    return (
-      <View>
-        <Text>Task not found</Text>
-      </View>
-    );
-  }
+
+  const {
+    title,
+    setTitle,
+    description,
+    setDescription,
+    size,
+    setSize,
+    isComplete,
+    setIsComplete,
+    handleSave,
+  } = useTasksDetailsEditPage(task as Task);
 
   return (
-    <View>
-      <TextInput value={task.title} />
-      <Text>{task.description}</Text>
+    <SafeAreaView style={styles.layoutContainer}>
+      <Text style={styles.pageHeading}>{`Editing ${task?.title}`}</Text>
+      <TextInput value={title} onChangeText={(text) => setTitle(text)} />
+      <TextInput
+        value={description}
+        onChangeText={(text) => setDescription(text)}
+      />
       <Button
         title="Done"
         onPress={() => {
-          setIsEditing(true);
+          handleSave();
+          setIsEditing(false);
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }

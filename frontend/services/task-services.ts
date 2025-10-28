@@ -13,4 +13,13 @@ const getTaskById = async (taskId: number): Promise<DatabaseTask> => {
   return res.data;
 };
 
-export { getTaskById };
+const updateTaskById = async (taskId: number, data: any) => {
+  const res = await api.put(`${TASKS_API_URL}/${taskId}`, data);
+  if (res.status !== 200) {
+    throw new Error("Error when updating task");
+  }
+
+  return res.data;
+};
+
+export { getTaskById, updateTaskById };
