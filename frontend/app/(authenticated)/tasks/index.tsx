@@ -10,7 +10,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Text style={styles.pageHeading}>Home</Text>
+      <Text style={styles.pageHeading}>Tasks</Text>
       <View style={styles.content}>
         <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {tasks.map((task) => (

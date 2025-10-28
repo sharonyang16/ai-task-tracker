@@ -33,7 +33,7 @@ export type Task = {
   title: string;
   description?: string;
   createdBy: string;
-  subTasks: DatabaseSubTask[];
+  subTasks: SubTask[];
   isComplete: boolean;
   size: TASK_SIZE;
 };

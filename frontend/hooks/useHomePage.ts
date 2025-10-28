@@ -17,11 +17,13 @@ const useHomePage = () => {
           subTasks: dbTask.sub_tasks.map((subtask) => ({
             ...subtask,
             createdAt: new Date(subtask.created_at),
+            parentTaskId: subtask.parent_task_id,
+            isComplete: subtask.is_complete,
           })),
           createdBy: dbTask.created_by,
           isComplete: dbTask.is_complete,
         }));
-        
+
         setTasks(processedData);
       }
     };
