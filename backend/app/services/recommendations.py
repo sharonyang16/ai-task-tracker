@@ -20,10 +20,18 @@ def get_recommendations(taskId):
 
         ai_response = client.models.generate_content(
             model="gemini-2.5-flash-lite",
-            contents=f"Create 3 small sub-tasks recommendations for this larger task: {data["title"]} - {data["description"]}; seperate each task using this delimiter: |:| and do not number the tasks, add any headers, or filler text, just start with the recommendations",
+            contents=f"Create 3 small sub-tasks recommendations for this larger task: {data["title"]} - {data["description"]} with a title and description for each task; seperate the title and description using this delimiter: |&| and start each task on a new line  -- do not number or label the tasks, add any headers, or add filler text",
         )
 
-        recommended_tasks = ai_response.candidates[0].content.parts[0].text.split("|:|")
+        recommended_tasks = ai_response.candidates[0].content.parts[0].text.split("\n")
+
+        for index, task in enumerate(recommended_tasks):
+            parts = task.split("|&|")
+
+            recommended_tasks[index] = {
+                "title": parts[0].strip(),
+                "description": parts[1].strip(),
+            }
 
         return recommended_tasks
     except IndexError:
