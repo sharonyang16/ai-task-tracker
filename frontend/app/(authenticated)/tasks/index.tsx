@@ -11,8 +11,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Tasks</Text>
-      {isLoading && <ActivityIndicator size="large" />}
-      {!isLoading && tasks.length === 0 ? (
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : tasks.length === 0 ? (
         <Text>No tasks found</Text>
       ) : (
         <View style={styles.content}>

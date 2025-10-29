@@ -21,7 +21,7 @@ const useTasksDetailsEditPage = (task: Task) => {
         title,
         description,
         size,
-        isComplete,
+        is_complete: isComplete,
       });
     }
   };

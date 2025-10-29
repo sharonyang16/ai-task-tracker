@@ -9,8 +9,9 @@ export default function TaskDetails() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      {isLoading && <ActivityIndicator size="large" />}
-      {!isLoading && task !== null ? (
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : task !== null ? (
         <View>
           <View
             style={{
