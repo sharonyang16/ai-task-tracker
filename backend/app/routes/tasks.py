@@ -161,9 +161,7 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
 @router.get("/{taskId}/recommendations")
 async def get_subtask_recommendations(taskId: int):
     try:
-        return {
-            "recommendations": get_recommendations(taskId),
-        }
+        return get_recommendations(taskId)
     except Exception as e:
         return JSONResponse(
             status_code=400,
