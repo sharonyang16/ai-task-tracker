@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { DatabaseTask, Task } from "@/types/tasks";
 import { useAuthContext } from "@/context/auth-context";
 import { getUserTasks } from "@/services/user-services";
+import { updateTaskById } from "@/services/task-services";
 
 const useHomePage = () => {
   const { user } = useAuthContext();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTasks = async () => {
       if (user !== null) {
+        setIsLoading(true);
         const res = await getUserTasks(user.id);
         const processedData: Task[] = res.map((dbTask: DatabaseTask) => ({
           ...dbTask,
@@ -17,20 +20,46 @@ const useHomePage = () => {
           subTasks: dbTask.sub_tasks.map((subtask) => ({
             ...subtask,
             createdAt: new Date(subtask.created_at),
+            parentTaskId: subtask.parent_task_id,
+            isComplete: subtask.is_complete,
           })),
           createdBy: dbTask.created_by,
           isComplete: dbTask.is_complete,
         }));
-        
+
         setTasks(processedData);
+        setIsLoading(false);
       }
     };
 
     fetchTasks();
   }, [user]);
 
+  const handleTaskCheckboxPress = async (taskId: number, value: boolean) => {
+    try {
+      await updateTaskById(taskId, {
+        is_complete: value,
+      });
+
+      setTasks((prev) =>
+        prev.map((task) => {
+          if (task.id === taskId) {
+            return { ...task, isComplete: value };
+          }
+          return task;
+        })
+      );
+    } catch {
+      // do nothing
+    }
+  };
+
+  
+
   return {
     tasks,
+    isLoading,
+    handleTaskCheckboxPress,
   };
 };
 
