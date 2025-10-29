@@ -1,5 +1,5 @@
 import { getTaskById } from "@/services/task-services";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Task } from "@/types/tasks";
 import { useTaskDetailContext } from "@/context/task-detail-context";
 

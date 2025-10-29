@@ -6,17 +6,24 @@ import { Link } from "expo-router";
 
 type TaskCardProps = {
   task: Task;
+  handleTaskCheckboxPress: (taskId: number, value: boolean) => void;
 };
 
-const TaskCard = ({ task }: TaskCardProps) => {
+const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
   return (
-    <Link href={`/tasks/${task.id}`}>
+    <View
+      style={{
+        backgroundColor: "#EAEAEA",
+        padding: 16,
+        borderRadius: 8,
+        width: "100%",
+      }}
+    >
       <View
         style={{
-          backgroundColor: "#EAEAEA",
-          padding: 16,
-          borderRadius: 8,
-          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
       >
         <View
@@ -24,10 +31,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
             display: "flex",
             flexDirection: "row",
             gap: 16,
-            justifyContent: "space-between",
           }}
         >
-          <Checkbox value={task.isComplete} />
+          <Checkbox
+            value={task.isComplete}
+            onValueChange={(value) => handleTaskCheckboxPress(task.id, value)}
+            style={{ zIndex: 2 }}
+          />
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 600 }}>{task.title}</Text>
             {task.description && <Text>{task.description}</Text>}
@@ -56,8 +66,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
             )}
           </View>
         </View>
+        <Link href={`/tasks/${task.id}`}>Edit</Link>
       </View>
-    </Link>
+    </View>
   );
 };
 
