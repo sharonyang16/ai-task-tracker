@@ -4,10 +4,11 @@ import { Task } from "@/types/tasks";
 import { useTaskDetailContext } from "@/context/task-detail-context";
 
 const useTasksDetailsPage = (taskId: number) => {
-  const { setTask, isEditing } = useTaskDetailContext();
+  const { setTask, isEditing, setIsLoading } = useTaskDetailContext();
 
   useEffect(() => {
     const fetchTask = async () => {
+      setIsLoading(true);
       const res = await getTaskById(taskId);
       const processedData: Task = {
         ...res,
@@ -23,6 +24,7 @@ const useTasksDetailsPage = (taskId: number) => {
       };
 
       setTask(processedData);
+      setIsLoading(false);
     };
 
     fetchTask();

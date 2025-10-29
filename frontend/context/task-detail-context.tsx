@@ -14,6 +14,8 @@ type TaskDetailContextType = {
   setTask: Dispatch<SetStateAction<Task | null>>;
   isEditing: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const TaskDetailContext = createContext<TaskDetailContextType | undefined>(
@@ -33,11 +35,19 @@ function useTaskDetailContext(): TaskDetailContextType {
 const TaskDetailProvider = (props: { children: ReactNode }): ReactElement => {
   const [task, setTask] = useState<Task | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <TaskDetailContext.Provider
       {...props}
-      value={{ task, setTask, isEditing, setIsEditing }}
+      value={{
+        task,
+        setTask,
+        isEditing,
+        setIsEditing,
+        isLoading,
+        setIsLoading,
+      }}
     />
   );
 };
