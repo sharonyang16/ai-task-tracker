@@ -20,8 +20,11 @@ export default function TaskDetailsEdit() {
     setSize,
     isComplete,
     setIsComplete,
+    newSubTasks,
+    recommendedSubTasks,
     handleSave,
     handleDelete,
+    handleAddSubTask,
   } = useTasksDetailsEditPage(task as Task);
 
   const deleteConfirmation = () => {
@@ -74,6 +77,70 @@ export default function TaskDetailsEdit() {
           </Text>
         </Pressable>
       </View>
+
+      {(task?.subTasks.length !== 0 || newSubTasks.length !== 0) && (
+        <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Text> Subtasks</Text>
+          {task?.subTasks.map((subTask) => (
+            <View
+              key={subTask.title}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+                backgroundColor: "#EAEAEA",
+                padding: 8,
+                borderRadius: 8,
+              }}
+            >
+              <Text>{subTask.title}</Text>
+              <Text>{subTask.description}</Text>
+            </View>
+          ))}
+          {newSubTasks.map((subTask) => (
+            <View
+              key={subTask.title}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+                backgroundColor: "#EAEAEA",
+                padding: 8,
+                borderRadius: 8,
+              }}
+            >
+              <Text>{subTask.title}</Text>
+              <Text>{subTask.description}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {recommendedSubTasks.length !== 0 && (
+        <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Text> Recommended Subtasks</Text>
+          {recommendedSubTasks.map((subTask) => (
+            <Pressable
+              key={subTask.title}
+              onPress={() => handleAddSubTask(subTask)}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                  backgroundColor: "#EAEAEA",
+                  padding: 8,
+                  borderRadius: 8,
+                }}
+              >
+                <Text>{subTask.title}</Text>
+                <Text>{subTask.description}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </View>
+      )}
 
       <Button
         title="Save"

@@ -6,8 +6,9 @@ import {
 import { useEffect, useState } from "react";
 import { Task } from "@/types/tasks";
 import { useRouter } from "expo-router";
+import { useTaskDetailContext } from "@/context/task-detail-context";
 
-type SubtaskRecommendation = {
+type UnAddedSubtask = {
   title: string;
   description: string;
 };
@@ -16,19 +17,20 @@ const useTasksDetailsEditPage = (task: Task) => {
   const [description, setDescription] = useState(task.description);
   const [size, setSize] = useState(task.size);
   const [isComplete, setIsComplete] = useState(task.isComplete);
+  const [newSubTasks, setNewSubTasks] = useState<UnAddedSubtask[]>([]);
   const [recommendedSubTasks, setRecommendedSubTasks] = useState<
-    SubtaskRecommendation[]
+    UnAddedSubtask[]
   >([]);
   const router = useRouter();
+  const { setIsLoading } = useTaskDetailContext();
 
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res: SubtaskRecommendation[] = await getSubTaskRecommendations(
-          task.id
-        );
-
+        setIsLoading(true);
+        const res: UnAddedSubtask[] = await getSubTaskRecommendations(task.id);
         setRecommendedSubTasks(res);
+        setIsLoading(false);
       } catch {
         setRecommendedSubTasks([]);
       }
@@ -55,6 +57,10 @@ const useTasksDetailsEditPage = (task: Task) => {
     }
   };
 
+  const handleAddSubTask = async (subtask: UnAddedSubtask) => {
+    setNewSubTasks((prev) => [subtask, ...prev]);
+  };
+
   const handleDelete = async () => {
     try {
       await deleteTaskById(task.id);
@@ -76,6 +82,8 @@ const useTasksDetailsEditPage = (task: Task) => {
     recommendedSubTasks,
     handleSave,
     handleDelete,
+    handleAddSubTask,
+    newSubTasks,
   };
 };
 
