@@ -28,7 +28,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="tasks/[id]"
+        name="tasks/[id]/edit"
         options={{
           href: null,
         }}

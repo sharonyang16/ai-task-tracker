@@ -66,7 +66,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
             )}
           </View>
         </View>
-        <Link href={`/tasks/${task.id}`}>Edit</Link>
+        <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
       </View>
     </View>
   );
