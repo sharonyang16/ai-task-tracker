@@ -30,6 +30,29 @@ export default function TaskDetails() {
           </View>
           <Text>{task.title}</Text>
           <Text>{task.description}</Text>
+          <Text>{task.size}</Text>
+          <Text>{task.isComplete ? "Complete" : "Incomplete"}</Text>
+
+          <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {task.subTasks.map((subTask) => (
+              <View
+                key={subTask.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                  backgroundColor: "#EAEAEA",
+                  padding: 8,
+                  borderRadius: 8,
+                }}
+              >
+                <Text>{subTask.title}</Text>
+                <Text>{subTask.description}</Text>
+
+                <Text>{subTask.isComplete ? "Complete" : "Incomplete"}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       ) : (
         <Text>No task found</Text>

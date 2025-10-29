@@ -30,4 +30,20 @@ const deleteTaskById = async (taskId: number) => {
 
   return res.data;
 };
-export { getTaskById, updateTaskById, deleteTaskById };
+
+const getSubTaskRecommendations = async (taskId: number) => {
+  const res = await api.get(`${TASKS_API_URL}/${taskId}/recommendations`);
+
+  if (res.status !== 200) {
+    throw new Error("Error when fetching subtask recommendations");
+  }
+
+  return res.data;
+};
+
+export {
+  getTaskById,
+  updateTaskById,
+  deleteTaskById,
+  getSubTaskRecommendations,
+};
