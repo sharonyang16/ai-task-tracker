@@ -7,6 +7,8 @@ from app.services.tasks import (
     update_task_by_id,
     get_subtask_by_id,
     update_subtask_by_id,
+    delete_task_by_id,
+    delete_subtask_by_id,
 )
 from app.services.recommendations import get_recommendations
 from fastapi import APIRouter
@@ -117,6 +119,17 @@ async def update_task(taskId: int, body: UpdateParentTaskRequestBody):
         )
 
 
+@router.delete("/{taskId}")
+async def delete_task(taskId: int):
+    try:
+        return delete_task_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
 @router.post("/{taskId}/subtask")
 async def create_subtask(taskId: int, body: CreateTaskRequestBody):
     try:
@@ -157,6 +170,15 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
             content={"message": str(e)},
         )
 
+@router.delete("/subtasks/{taskId}")
+async def delete_subtask(taskId: int):
+    try:
+        return delete_subtask_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
 
 @router.get("/{taskId}/recommendations")
 async def get_subtask_recommendations(taskId: int):
