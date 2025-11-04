@@ -29,6 +29,7 @@ import {
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
+import { VStack } from "@/components/ui/vstack";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -63,13 +64,12 @@ export default function TaskDetailsEdit() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.layoutContainer}>
       {loading ? (
         <Spinner size="large" />
       ) : (
-        <View style={styles.layoutContainer}>
+        <VStack>
           <Heading size="2xl">{`Editing "${title}"`}</Heading>
-
           <Input>
             <InputField
               type="text"
@@ -190,7 +190,7 @@ export default function TaskDetailsEdit() {
               {loading ? <ButtonSpinner /> : "Delete Task"}
             </ButtonText>
           </Button>
-        </View>
+        </VStack>
       )}
     </SafeAreaView>
   );
