@@ -33,6 +33,7 @@ import styles from "@/styles/global.styles";
 import React from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/ui/text";
 
 const CreatePage = () => {
   const {
@@ -64,38 +65,50 @@ const CreatePage = () => {
               <AlertText>{errorMessage}</AlertText>
             </Alert>
           )}
-          <Input>
-            <InputField
-              type="text"
-              value={title}
-              onChangeText={(text) => setTitle(text)}
-              placeholder="Do some work"
-            />
-          </Input>
-          <Textarea>
-            <TextareaInput
-              value={description || ""}
-              onChangeText={(text) => setDescription(text)}
-              placeholder="Get xyz done..."
-            />
-          </Textarea>
-          <Select selectedValue={size} onValueChange={setSize}>
-            <SelectTrigger>
-              <SelectInput placeholder="Task Size" />
-              <SelectIcon as={ChevronDownIcon} />
-            </SelectTrigger>
-            <SelectPortal>
-              <SelectBackdrop />
-              <SelectContent>
-                <SelectDragIndicatorWrapper>
-                  <SelectDragIndicator />
-                </SelectDragIndicatorWrapper>
-                <SelectItem label="Small" value="SMALL" />
-                <SelectItem label="Medium" value="MEDIUM" />
-                <SelectItem label="Large" value="LARGE" />
-              </SelectContent>
-            </SelectPortal>
-          </Select>
+          <VStack>
+            <Text>Title</Text>
+            <Input>
+              <InputField
+                type="text"
+                value={title}
+                onChangeText={(text) => setTitle(text)}
+                placeholder="Do some work"
+              />
+            </Input>
+          </VStack>
+
+          <VStack>
+            <Text>Description</Text>
+            <Textarea>
+              <TextareaInput
+                value={description || ""}
+                onChangeText={(text) => setDescription(text)}
+                placeholder="Get xyz done..."
+              />
+            </Textarea>
+          </VStack>
+
+          <VStack>
+            <Text>Size</Text>
+            <Select selectedValue={size} onValueChange={setSize}>
+              <SelectTrigger>
+                <SelectInput placeholder="Task Size" />
+                <SelectIcon as={ChevronDownIcon} />
+              </SelectTrigger>
+              <SelectPortal>
+                <SelectBackdrop />
+                <SelectContent>
+                  <SelectDragIndicatorWrapper>
+                    <SelectDragIndicator />
+                  </SelectDragIndicatorWrapper>
+                  <SelectItem label="Small" value="SMALL" />
+                  <SelectItem label="Medium" value="MEDIUM" />
+                  <SelectItem label="Large" value="LARGE" />
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+          </VStack>
+
           <Button onPress={() => handleCreate()} disabled={loading} size="lg">
             <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
           </Button>

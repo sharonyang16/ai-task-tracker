@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { createTask } from "@/services/task-services";
+import { useAuthContext } from "@/context/auth-context";
 
 const useCreatePage = () => {
   const [title, setTitle] = useState<string>("");
@@ -9,6 +10,7 @@ const useCreatePage = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { user } = useAuthContext();
 
   const handleCreate = async () => {
     setErrorMessage("");
@@ -23,6 +25,7 @@ const useCreatePage = () => {
       await createTask({
         title,
         description,
+        creator: user?.id,
         size,
       });
       setLoading(false);
