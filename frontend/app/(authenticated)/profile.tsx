@@ -1,8 +1,9 @@
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { useAuthContext } from "@/context/auth-context";
 import useAuth from "@/hooks/useAuth";
 import styles from "@/styles/global.styles";
 import React from "react";
-import { Button, Text } from "react-native";
+import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -13,7 +14,9 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Profile</Text>
       <Text>{user?.email}</Text>
-      <Button title="Sign Out" onPress={() => signOut()} disabled={loading} />
+      <Button onPress={() => signOut()} disabled={loading} size="lg">
+        <ButtonText>{loading ? <ButtonSpinner /> : "Sign Out"}</ButtonText>
+      </Button>
     </SafeAreaView>
   );
 }

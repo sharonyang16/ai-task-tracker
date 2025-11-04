@@ -1,13 +1,7 @@
 import useEditPage from "@/hooks/useEditPage";
 import styles from "@/styles/global.styles";
 import React from "react";
-import {
-  Alert,
-  Button,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
@@ -20,6 +14,7 @@ import {
 import { CheckIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -161,19 +156,20 @@ export default function TaskDetailsEdit() {
               ))}
             </View>
           )}
-
+          <Button onPress={() => handleSave} disabled={loading} size="lg">
+            <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
+          </Button>
           <Button
-            title="Save"
-            onPress={() => {
-              handleSave();
-            }}
-          />
-          <Button
-            title="Delete Task"
-            onPress={() => {
-              deleteConfirmation();
-            }}
-          />
+            onPress={() => deleteConfirmation()}
+            disabled={loading}
+            variant="outline"
+            size="md"
+            action="negative"
+          >
+            <ButtonText>
+              {loading ? <ButtonSpinner /> : "Delete Task"}
+            </ButtonText>
+          </Button>
         </View>
       )}
     </SafeAreaView>

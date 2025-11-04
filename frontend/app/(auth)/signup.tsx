@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -13,6 +13,7 @@ import {
 import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 
 export default function SignUpScreen() {
   const {
@@ -74,8 +75,9 @@ export default function SignUpScreen() {
             </CheckboxIndicator>
             <CheckboxLabel>Stay signed in?</CheckboxLabel>
           </Checkbox>
-
-          <Button title="Submit" onPress={handleSignUp} disabled={loading} />
+          <Button onPress={handleSignUp} disabled={loading} size="lg">
+            <ButtonText>{loading ? <ButtonSpinner /> : "Sign Up"}</ButtonText>
+          </Button>
         </View>
       </View>
     </SafeAreaView>
