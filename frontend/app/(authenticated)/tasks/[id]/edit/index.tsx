@@ -27,6 +27,7 @@ import {
   SelectDragIndicator,
   SelectItem,
 } from "@/components/ui/select";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -75,14 +76,13 @@ export default function TaskDetailsEdit() {
               placeholder="Do some work"
             />
           </Input>
-          <Input>
-            <InputField
-              type="text"
+          <Textarea>
+            <TextareaInput
               value={description}
               onChangeText={(text) => setDescription(text)}
               placeholder="Get xyz done..."
             />
-          </Input>
+          </Textarea>
           <Select selectedValue={size} onValueChange={setSize}>
             <SelectTrigger>
               <SelectInput placeholder="Task Size" />
