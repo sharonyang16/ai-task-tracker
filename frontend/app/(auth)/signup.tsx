@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -15,6 +14,8 @@ import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
 
 export default function SignUpScreen() {
   const {
@@ -34,14 +35,9 @@ export default function SignUpScreen() {
   return (
     <SafeAreaView style={styles.layoutContainer}>
       <Heading size="2xl">Sign Up</Heading>
-      <View>
-        <View style={authStyles.container}>
-          {!!errorMessage && (
-            <Alert action="error">
-              <AlertIcon as={AlertCircleIcon} />
-              <AlertText>{errorMessage}</AlertText>
-            </Alert>
-          )}
+      <VStack style={authStyles.container}>
+        <VStack>
+          <Text size="lg">Email</Text>
           <Input size="xl">
             <InputField
               type="text"
@@ -50,37 +46,49 @@ export default function SignUpScreen() {
               placeholder="example@email.com"
             />
           </Input>
+        </VStack>
+        <VStack>
+          <Text size="lg">Password</Text>
           <Input size="xl">
             <InputField
               type={"password"}
               value={password}
               onChangeText={(text) => setPassword(text)}
-              placeholder="••••••"
+              placeholder="••••••••"
             />
           </Input>
+        </VStack>
+        <VStack>
+          <Text size="lg">Confirm Password</Text>
           <Input size="xl">
             <InputField
               type={"password"}
               value={confirmPassword}
               onChangeText={(text) => setConfirmPassword(text)}
-              placeholder="••••••"
+              placeholder="••••••••"
             />
           </Input>
-          <Checkbox
-            value={staySignedIn.toString()}
-            isChecked={staySignedIn}
-            onChange={(value) => setStaySignedIn(value)}
-          >
-            <CheckboxIndicator>
-              <CheckboxIcon as={CheckIcon} />
-            </CheckboxIndicator>
-            <CheckboxLabel>Stay signed in?</CheckboxLabel>
-          </Checkbox>
-          <Button onPress={handleSignUp} disabled={loading} size="lg">
-            <ButtonText>{loading ? <ButtonSpinner /> : "Sign Up"}</ButtonText>
-          </Button>
-        </View>
-      </View>
+        </VStack>
+        <Checkbox
+          value={staySignedIn.toString()}
+          isChecked={staySignedIn}
+          onChange={(value) => setStaySignedIn(value)}
+        >
+          <CheckboxIndicator>
+            <CheckboxIcon as={CheckIcon} />
+          </CheckboxIndicator>
+          <CheckboxLabel>Stay signed in?</CheckboxLabel>
+        </Checkbox>
+        {!!errorMessage && (
+          <Alert action="error">
+            <AlertIcon as={AlertCircleIcon} />
+            <AlertText>{errorMessage}</AlertText>
+          </Alert>
+        )}
+        <Button onPress={handleSignUp} disabled={loading} size="lg">
+          <ButtonText>{loading ? <ButtonSpinner /> : "Sign Up"}</ButtonText>
+        </Button>
+      </VStack>
     </SafeAreaView>
   );
 }

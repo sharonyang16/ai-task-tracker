@@ -1,7 +1,7 @@
 import useEditPage from "@/hooks/useEditPage";
 import styles from "@/styles/global.styles";
 import React from "react";
-import { Alert, Pressable, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
 import {
@@ -29,6 +29,15 @@ import {
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
+import { VStack } from "@/components/ui/vstack";
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -50,116 +59,92 @@ export default function TaskDetailsEdit() {
     handleDelete,
     handleAddSubTask,
     newSubTasks,
+    showDeleteConfirmation,
+    setShowDeleteConfirmation,
   } = useEditPage(taskId);
 
-  const deleteConfirmation = () => {
-    Alert.alert("Deleting Task", `Are you sure you want to delete "${title}"`, [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      { text: "Yes", onPress: () => handleDelete() },
-    ]);
-  };
-
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.layoutContainer}>
       {loading ? (
         <Spinner size="large" />
       ) : (
-        <View style={styles.layoutContainer}>
-          <Heading size="2xl">{`Editing "${title}"`}</Heading>
-
-          <Input>
-            <InputField
-              type="text"
-              value={title}
-              onChangeText={(text) => setTitle(text)}
-              placeholder="Do some work"
-            />
-          </Input>
-          <Textarea>
-            <TextareaInput
-              value={description}
-              onChangeText={(text) => setDescription(text)}
-              placeholder="Get xyz done..."
-            />
-          </Textarea>
-          <Select selectedValue={size} onValueChange={setSize}>
-            <SelectTrigger>
-              <SelectInput placeholder="Task Size" />
-              <SelectIcon as={ChevronDownIcon} />
-            </SelectTrigger>
-            <SelectPortal>
-              <SelectBackdrop />
-              <SelectContent>
-                <SelectDragIndicatorWrapper>
-                  <SelectDragIndicator />
-                </SelectDragIndicatorWrapper>
-                <SelectItem label="Small" value="SMALL" />
-                <SelectItem label="Medium" value="MEDIUM" />
-                <SelectItem label="Large" value="LARGE" />
-              </SelectContent>
-            </SelectPortal>
-          </Select>
-          <Checkbox
-            value={isComplete?.toString() || ""}
-            isChecked={isComplete || false}
-            onChange={(value) => setIsComplete(value)}
-            size="md"
-          >
-            <CheckboxIndicator>
-              <CheckboxIcon as={CheckIcon} />
-            </CheckboxIndicator>
-            <CheckboxLabel>Done?</CheckboxLabel>
-          </Checkbox>
-          {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
-            <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Heading size="md">Subtasks</Heading>
-              {subTasks.map((subTask) => (
-                <View
-                  key={subTask.title}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 4,
-                    backgroundColor: "#EAEAEA",
-                    padding: 8,
-                    borderRadius: 8,
-                  }}
-                >
-                  <Heading size="sm">{subTask.title}</Heading>
-                  <Text>{subTask.description}</Text>
-                </View>
-              ))}
-              {newSubTasks.map((subTask) => (
-                <View
-                  key={subTask.title}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 4,
-                    backgroundColor: "#EAEAEA",
-                    padding: 8,
-                    borderRadius: 8,
-                  }}
-                >
-                  <Heading size="sm">{subTask.title}</Heading>
-                  <Text>{subTask.description}</Text>
-                </View>
-              ))}
-            </View>
-          )}
-
-          {recommendedSubTasks.length !== 0 && (
-            <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Heading size="md">Recommended Subtasks</Heading>
-              {recommendedSubTasks.map((subTask) => (
-                <Pressable
-                  key={subTask.title}
-                  onPress={() => handleAddSubTask(subTask)}
-                >
+        <ScrollView>
+          <VStack space="md">
+            <AlertDialog isOpen={showDeleteConfirmation} size="lg">
+              <AlertDialogBackdrop />
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <Heading>Deleting Task</Heading>
+                </AlertDialogHeader>
+                <AlertDialogBody className="py-4">
+                  <Text>{`Are you sure you want to delete "${title}"?`}</Text>
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button
+                    variant="outline"
+                    action="secondary"
+                    onPress={() => setShowDeleteConfirmation(false)}
+                  >
+                    <ButtonText>Cancel</ButtonText>
+                  </Button>
+                  <Button onPress={() => handleDelete()} action="negative">
+                    <ButtonText>Delete</ButtonText>
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Heading size="2xl">{`Editing "${title}"`}</Heading>
+            <Input>
+              <InputField
+                type="text"
+                value={title}
+                onChangeText={(text) => setTitle(text)}
+                placeholder="Do some work"
+              />
+            </Input>
+            <Textarea>
+              <TextareaInput
+                value={description}
+                onChangeText={(text) => setDescription(text)}
+                placeholder="Get xyz done..."
+              />
+            </Textarea>
+            <Select selectedValue={size} onValueChange={setSize}>
+              <SelectTrigger>
+                <SelectInput placeholder="Task Size" />
+                <SelectIcon as={ChevronDownIcon} />
+              </SelectTrigger>
+              <SelectPortal>
+                <SelectBackdrop />
+                <SelectContent>
+                  <SelectDragIndicatorWrapper>
+                    <SelectDragIndicator />
+                  </SelectDragIndicatorWrapper>
+                  <SelectItem label="Small" value="SMALL" />
+                  <SelectItem label="Medium" value="MEDIUM" />
+                  <SelectItem label="Large" value="LARGE" />
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+            <Checkbox
+              value={isComplete?.toString() || ""}
+              isChecked={isComplete || false}
+              onChange={(value) => setIsComplete(value)}
+              size="md"
+            >
+              <CheckboxIndicator>
+                <CheckboxIcon as={CheckIcon} />
+              </CheckboxIndicator>
+              <CheckboxLabel>Done?</CheckboxLabel>
+            </Checkbox>
+            {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
+              <View
+                style={{ display: "flex", flexDirection: "column", gap: 8 }}
+              >
+                <Heading size="md">Subtasks</Heading>
+                {subTasks.map((subTask) => (
                   <View
+                    key={subTask.title}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -172,25 +157,69 @@ export default function TaskDetailsEdit() {
                     <Heading size="sm">{subTask.title}</Heading>
                     <Text>{subTask.description}</Text>
                   </View>
-                </Pressable>
-              ))}
-            </View>
-          )}
-          <Button onPress={() => handleSave} disabled={loading} size="lg">
-            <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
-          </Button>
-          <Button
-            onPress={() => deleteConfirmation()}
-            disabled={loading}
-            variant="outline"
-            size="md"
-            action="negative"
-          >
-            <ButtonText>
-              {loading ? <ButtonSpinner /> : "Delete Task"}
-            </ButtonText>
-          </Button>
-        </View>
+                ))}
+                {newSubTasks.map((subTask) => (
+                  <View
+                    key={subTask.title}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 4,
+                      backgroundColor: "#EAEAEA",
+                      padding: 8,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <Heading size="sm">{subTask.title}</Heading>
+                    <Text>{subTask.description}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {recommendedSubTasks.length !== 0 && (
+              <View
+                style={{ display: "flex", flexDirection: "column", gap: 8 }}
+              >
+                <Heading size="md">Recommended Subtasks</Heading>
+                {recommendedSubTasks.map((subTask) => (
+                  <Pressable
+                    key={subTask.title}
+                    onPress={() => handleAddSubTask(subTask)}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 4,
+                        backgroundColor: "#EAEAEA",
+                        padding: 8,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Heading size="sm">{subTask.title}</Heading>
+                      <Text>{subTask.description}</Text>
+                    </View>
+                  </Pressable>
+                ))}
+              </View>
+            )}
+            <Button onPress={() => handleSave} disabled={loading} size="lg">
+              <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
+            </Button>
+            <Button
+              onPress={() => setShowDeleteConfirmation(true)}
+              disabled={loading}
+              variant="outline"
+              size="md"
+              action="negative"
+            >
+              <ButtonText>
+                {loading ? <ButtonSpinner /> : "Delete Task"}
+              </ButtonText>
+            </Button>
+          </VStack>
+        </ScrollView>
       )}
     </SafeAreaView>
   );

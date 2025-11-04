@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingHorizontal: 16,
     paddingVertical: 24,
+    height: "100%",
   },
   pageHeading: {
     fontSize: 24,

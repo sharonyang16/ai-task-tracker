@@ -1,16 +1,21 @@
 import React from "react";
 import { View } from "react-native";
 import { Task } from "@/types/tasks";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import {
   Checkbox,
   CheckboxIcon,
   CheckboxIndicator,
 } from "@/components/ui/checkbox";
-import { CheckIcon } from "@/components/ui/icon";
+import { CheckIcon, EditIcon } from "@/components/ui/icon";
 import { Card } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
-import { Heading } from "../ui/heading";
+import { Heading } from "@/components/ui/heading";
+
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Badge, BadgeText } from "../ui/badge";
+import { Button, ButtonIcon } from "../ui/button";
 
 type TaskCardProps = {
   task: Task;
@@ -18,53 +23,60 @@ type TaskCardProps = {
 };
 
 const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
+  const router = useRouter();
+
   return (
     <Card>
-      <View
-        className="w-full"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <View
-          className="w-full"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 16,
-            alignItems: "flex-start",
-          }}
-        >
-          <Checkbox
-            value={task.isComplete.toString()}
-            isChecked={task.isComplete}
-            onChange={(value) => handleTaskCheckboxPress(task.id, value)}
-            size="md"
-          >
-            <CheckboxIndicator>
-              <CheckboxIcon as={CheckIcon} />
-            </CheckboxIndicator>
-          </Checkbox>
-          <View className="w-full">
-            <Heading size="lg" className="text-black">
+      <VStack className="">
+        <View className="flex flex-row justify-between max-w-full">
+          <HStack space="md" className="flex-wrap max-w-100%">
+            <Checkbox
+              value={task.isComplete.toString()}
+              isChecked={task.isComplete}
+              onChange={(value) => handleTaskCheckboxPress(task.id, value)}
+              size="md"
+            >
+              <CheckboxIndicator>
+                <CheckboxIcon as={CheckIcon} />
+              </CheckboxIndicator>
+            </Checkbox>
+            <Heading size="lg" className="">
               {task.title}
             </Heading>
-            <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
+          </HStack>
+          <Button
+            className="min-w-6"
+            variant="link"
+            onPress={() => {
+              router.navigate(`/tasks/${task.id}/edit`);
+            }}
+          >
+            <ButtonIcon size="sm" as={EditIcon} />
+          </Button>
+        </View>
+
+        <VStack className="pl-8" space="md">
+          <VStack space="sm">
+            <HStack>
+              <Badge size="sm" action="muted" variant="outline">
+                <BadgeText>{task.size}</BadgeText>
+              </Badge>
+            </HStack>
             {task.description && <Text>{task.description}</Text>}
-            <Text>{task.size}</Text>
-            {task.subTasks.length > 0 && (
-              <View style={{ padding: 8, gap: 8 }}>
-                {task.subTasks.map((subtask) => (
-                  <View
-                    key={`${task.id}-${subtask.id}`}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: 8,
-                    }}
-                  >
+          </VStack>
+
+          {task.subTasks.length > 0 && (
+            <VStack space="md">
+              {task.subTasks.map((subtask) => (
+                <VStack
+                  key={`${task.id}-${subtask.id}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 8,
+                  }}
+                >
+                  <HStack space="sm">
                     <Checkbox
                       value={subtask.isComplete.toString()}
                       isChecked={subtask.isComplete}
@@ -77,19 +89,14 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
                         <CheckboxIcon as={CheckIcon} />
                       </CheckboxIndicator>
                     </Checkbox>
-                    <View style={{ flex: 1 }}>
-                      <Text style={{ fontWeight: 600 }}>{subtask.title}</Text>
-                      {subtask.description && (
-                        <Text>{subtask.description}</Text>
-                      )}
-                    </View>
-                  </View>
-                ))}
-              </View>
-            )}
-          </View>
-        </View>
-      </View>
+                    <Text style={{ fontWeight: 600 }}>{subtask.title}</Text>
+                  </HStack>
+                </VStack>
+              ))}
+            </VStack>
+          )}
+        </VStack>
+      </VStack>
     </Card>
   );
 };
