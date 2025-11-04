@@ -26,6 +26,12 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="tasks/create"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
