@@ -69,6 +69,7 @@ const useEditPage = (taskId: number) => {
           setLoading(false);
         } catch {
           setRecommendedSubTasks([]);
+          setLoading(false);
         }
       }
     };

@@ -1,20 +1,34 @@
 import useEditPage from "@/hooks/useEditPage";
 import styles from "@/styles/global.styles";
-
 import React from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Button,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Picker } from "@react-native-picker/picker";
-import { Checkbox } from "expo-checkbox";
 import { useLocalSearchParams } from "expo-router";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from "@/components/ui/checkbox";
+import { CheckIcon, ChevronDownIcon } from "@/components/ui/icon";
+import { Input, InputField } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+  SelectItem,
+} from "@/components/ui/select";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -51,47 +65,57 @@ export default function TaskDetailsEdit() {
   return (
     <SafeAreaView>
       {loading ? (
-        <ActivityIndicator size="large" />
+        <Spinner size="large" />
       ) : (
         <View style={styles.layoutContainer}>
-          <Text style={styles.pageHeading}>{`Editing "${title}"`}</Text>
-          <TextInput
-            value={title}
-            onChangeText={(text) => setTitle(text)}
-            placeholder="Task Description"
-          />
-          <TextInput
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-            placeholder="Task Description"
-          />
-          <Picker
-            selectedValue={size}
-            onValueChange={(itemValue) => setSize(itemValue)}
-          >
-            <Picker.Item label="Small" value="SMALL" />
-            <Picker.Item label="Medium" value="MEDIUM" />
-            <Picker.Item label="Large" value="LARGE" />
-          </Picker>
-          <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
-            <Checkbox
-              value={isComplete || false}
-              onValueChange={(value) => setIsComplete(value)}
-              accessibilityLabelledBy="checkbox-label"
-            />
-            <Pressable onPress={() => setIsComplete(!isComplete)}>
-              <Text
-                accessibilityLabel="label for checkbox"
-                nativeID="checkbox-label"
-              >
-                Done?
-              </Text>
-            </Pressable>
-          </View>
+          <Heading size="2xl">{`Editing "${title}"`}</Heading>
 
+          <Input>
+            <InputField
+              type="text"
+              value={title}
+              onChangeText={(text) => setTitle(text)}
+              placeholder="Do some work"
+            />
+          </Input>
+          <Textarea>
+            <TextareaInput
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+              placeholder="Get xyz done..."
+            />
+          </Textarea>
+          <Select selectedValue={size} onValueChange={setSize}>
+            <SelectTrigger>
+              <SelectInput placeholder="Task Size" />
+              <SelectIcon as={ChevronDownIcon} />
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                <SelectItem label="Small" value="SMALL" />
+                <SelectItem label="Medium" value="MEDIUM" />
+                <SelectItem label="Large" value="LARGE" />
+              </SelectContent>
+            </SelectPortal>
+          </Select>
+          <Checkbox
+            value={isComplete?.toString() || ""}
+            isChecked={isComplete || false}
+            onChange={(value) => setIsComplete(value)}
+            size="md"
+          >
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+            <CheckboxLabel>Done?</CheckboxLabel>
+          </Checkbox>
           {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
             <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Text> Subtasks</Text>
+              <Heading size="md">Subtasks</Heading>
               {subTasks.map((subTask) => (
                 <View
                   key={subTask.title}
@@ -104,7 +128,7 @@ export default function TaskDetailsEdit() {
                     borderRadius: 8,
                   }}
                 >
-                  <Text>{subTask.title}</Text>
+                  <Heading size="sm">{subTask.title}</Heading>
                   <Text>{subTask.description}</Text>
                 </View>
               ))}
@@ -120,7 +144,7 @@ export default function TaskDetailsEdit() {
                     borderRadius: 8,
                   }}
                 >
-                  <Text>{subTask.title}</Text>
+                  <Heading size="sm">{subTask.title}</Heading>
                   <Text>{subTask.description}</Text>
                 </View>
               ))}
@@ -129,7 +153,7 @@ export default function TaskDetailsEdit() {
 
           {recommendedSubTasks.length !== 0 && (
             <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Text> Recommended Subtasks</Text>
+              <Heading size="md">Recommended Subtasks</Heading>
               {recommendedSubTasks.map((subTask) => (
                 <Pressable
                   key={subTask.title}
@@ -145,26 +169,27 @@ export default function TaskDetailsEdit() {
                       borderRadius: 8,
                     }}
                   >
-                    <Text>{subTask.title}</Text>
+                    <Heading size="sm">{subTask.title}</Heading>
                     <Text>{subTask.description}</Text>
                   </View>
                 </Pressable>
               ))}
             </View>
           )}
-
+          <Button onPress={() => handleSave} disabled={loading} size="lg">
+            <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
+          </Button>
           <Button
-            title="Save"
-            onPress={() => {
-              handleSave();
-            }}
-          />
-          <Button
-            title="Delete Task"
-            onPress={() => {
-              deleteConfirmation();
-            }}
-          />
+            onPress={() => deleteConfirmation()}
+            disabled={loading}
+            variant="outline"
+            size="md"
+            action="negative"
+          >
+            <ButtonText>
+              {loading ? <ButtonSpinner /> : "Delete Task"}
+            </ButtonText>
+          </Button>
         </View>
       )}
     </SafeAreaView>

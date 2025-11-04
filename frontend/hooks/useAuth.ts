@@ -10,7 +10,6 @@ const useAuth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [infoMessage, setInfoMessage] = useState("");
   const [staySignedIn, setStaySignedIn] = useState(true);
 
   const { saveSession, getSessionTokens, deleteSession } = useSecureStorage();
@@ -35,12 +34,11 @@ const useAuth = () => {
     };
 
     attemptSignIn();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSignUp = async () => {
     setErrorMessage("");
-    setInfoMessage("");
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match!");
@@ -65,7 +63,6 @@ const useAuth = () => {
 
   const handleLogin = async () => {
     setErrorMessage("");
-    setInfoMessage("");
 
     setLoading(true);
 
@@ -108,7 +105,6 @@ const useAuth = () => {
     setConfirmPassword,
     loading,
     errorMessage,
-    infoMessage,
     handleSignUp,
     handleLogin,
     signOut,

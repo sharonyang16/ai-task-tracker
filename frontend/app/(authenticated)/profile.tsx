@@ -1,21 +1,23 @@
-import Banner from "@/components/banner";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 import { useAuthContext } from "@/context/auth-context";
 import useAuth from "@/hooks/useAuth";
 import styles from "@/styles/global.styles";
 import React from "react";
-import { Button, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/ui/text";
 
 export default function HomeScreen() {
   const { user } = useAuthContext();
-  const { loading, errorMessage, signOut } = useAuth();
+  const { loading, signOut } = useAuth();
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Text style={styles.pageHeading}>Profile</Text>
+      <Heading size="2xl">Profile</Heading>
       <Text>{user?.email}</Text>
-      {errorMessage && <Banner text={errorMessage} alertType="warning" />}
-      <Button title="Sign Out" onPress={() => signOut()} disabled={loading} />
+      <Button onPress={() => signOut()} disabled={loading} size="lg">
+        <ButtonText>{loading ? <ButtonSpinner /> : "Sign Out"}</ButtonText>
+      </Button>
     </SafeAreaView>
   );
 }

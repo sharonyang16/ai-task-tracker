@@ -1,8 +1,16 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Checkbox } from "expo-checkbox";
+import { View } from "react-native";
 import { Task } from "@/types/tasks";
 import { Link } from "expo-router";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+} from "@/components/ui/checkbox";
+import { CheckIcon } from "@/components/ui/icon";
+import { Card } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
+import { Heading } from "../ui/heading";
 
 type TaskCardProps = {
   task: Task;
@@ -11,15 +19,9 @@ type TaskCardProps = {
 
 const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
   return (
-    <View
-      style={{
-        backgroundColor: "#EAEAEA",
-        padding: 16,
-        borderRadius: 8,
-        width: "100%",
-      }}
-    >
+    <Card>
       <View
+        className="w-full"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -27,19 +29,29 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
         }}
       >
         <View
+          className="w-full"
           style={{
             display: "flex",
             flexDirection: "row",
             gap: 16,
+            alignItems: "flex-start",
           }}
         >
           <Checkbox
-            value={task.isComplete}
-            onValueChange={(value) => handleTaskCheckboxPress(task.id, value)}
-            style={{ zIndex: 2 }}
-          />
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 600 }}>{task.title}</Text>
+            value={task.isComplete.toString()}
+            isChecked={task.isComplete}
+            onChange={(value) => handleTaskCheckboxPress(task.id, value)}
+            size="md"
+          >
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+          </Checkbox>
+          <View className="w-full">
+            <Heading size="lg" className="text-black">
+              {task.title}
+            </Heading>
+            <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
             {task.description && <Text>{task.description}</Text>}
             <Text>{task.size}</Text>
             {task.subTasks.length > 0 && (
@@ -50,10 +62,21 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
                     style={{
                       display: "flex",
                       flexDirection: "row",
-                      gap: 16,
+                      gap: 8,
                     }}
                   >
-                    <Checkbox value={task.isComplete} />
+                    <Checkbox
+                      value={subtask.isComplete.toString()}
+                      isChecked={subtask.isComplete}
+                      onChange={(value) =>
+                        handleTaskCheckboxPress(task.id, value)
+                      }
+                      size="sm"
+                    >
+                      <CheckboxIndicator>
+                        <CheckboxIcon as={CheckIcon} />
+                      </CheckboxIndicator>
+                    </Checkbox>
                     <View style={{ flex: 1 }}>
                       <Text style={{ fontWeight: 600 }}>{subtask.title}</Text>
                       {subtask.description && (
@@ -66,9 +89,8 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
             )}
           </View>
         </View>
-        <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
       </View>
-    </View>
+    </Card>
   );
 };
 

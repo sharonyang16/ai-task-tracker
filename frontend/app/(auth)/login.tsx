@@ -1,11 +1,20 @@
 import React from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Checkbox } from "expo-checkbox";
-import Banner from "@/components/banner";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from "@/components/ui/checkbox";
+import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText, ButtonSpinner } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 
 export default function LoginScreen() {
   const {
@@ -15,7 +24,6 @@ export default function LoginScreen() {
     setPassword,
     loading,
     errorMessage,
-    infoMessage,
     handleLogin,
     staySignedIn,
     setStaySignedIn,
@@ -23,41 +31,45 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Text style={styles.pageHeading}>Login</Text>
-      <View style={styles.content}>
+      <Heading size="2xl">Login</Heading>
+      <View >
         <View style={authStyles.container}>
-          {!!errorMessage && <Banner text={errorMessage} alertType="warning" />}
-          {!!infoMessage && <Banner text={infoMessage} alertType="info" />}
-          <TextInput
-            style={authStyles.input}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            placeholder="your email"
-          />
-          <TextInput
-            style={authStyles.input}
-            value={password}
-            textContentType="password"
-            secureTextEntry={true}
-            onChangeText={(text) => setPassword(text)}
-            placeholder="your password"
-          />
-          <View style={authStyles.checkbox}>
-            <Checkbox
-              value={staySignedIn}
-              onChange={() => setStaySignedIn(!staySignedIn)}
-              accessibilityLabelledBy="checkbox-label"
+          {!!errorMessage && (
+            <Alert action="error">
+              <AlertIcon as={AlertCircleIcon} />
+              <AlertText>{errorMessage}</AlertText>
+            </Alert>
+          )}
+          <Input size="xl">
+            <InputField
+              type="text"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              placeholder="example@email.com"
             />
-            <Pressable onPress={() => setStaySignedIn(!staySignedIn)}>
-              <Text
-                accessibilityLabel="label for checkbox"
-                nativeID="checkbox-label"
-              >
-                Stay signed in?
-              </Text>
-            </Pressable>
-          </View>
-          <Button title="Submit" onPress={handleLogin} disabled={loading} />
+          </Input>
+          <Input size="xl">
+            <InputField
+              type={"password"}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              placeholder="••••••"
+            />
+          </Input>
+          <Checkbox
+            value={staySignedIn.toString()}
+            isChecked={staySignedIn}
+            onChange={(value) => setStaySignedIn(value)}
+          >
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+            <CheckboxLabel>Stay signed in?</CheckboxLabel>
+          </Checkbox>
+
+          <Button onPress={handleLogin} disabled={loading} size="lg">
+            <ButtonText>{loading ? <ButtonSpinner /> : "Login"}</ButtonText>
+          </Button>
         </View>
       </View>
     </SafeAreaView>

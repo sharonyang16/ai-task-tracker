@@ -3,7 +3,12 @@
     "jsx": "react",
     "strict": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
+      ]
     }
   },
   "include": [
@@ -11,7 +16,8 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "types"
+    "types",
+    "nativewind-env.d.ts"
   ],
   "extends": "expo/tsconfig.base"
 }
