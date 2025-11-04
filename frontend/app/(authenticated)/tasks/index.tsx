@@ -8,9 +8,13 @@ import { Spinner } from "@/components/ui/spinner";
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
+import { Fab, FabIcon } from "@/components/ui/fab";
+import { AddIcon } from "@/components/ui/icon";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const { tasks, isLoading, handleTaskCheckboxPress } = useHomePage();
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
@@ -32,6 +36,15 @@ export default function HomeScreen() {
           </VStack>
         </ScrollView>
       )}
+      <Fab
+        placement="bottom right"
+        size="lg"
+        onPress={() => {
+          router.navigate("/tasks/create");
+        }}
+      >
+        <FabIcon as={AddIcon} />
+      </Fab>
     </SafeAreaView>
   );
 }
