@@ -13,6 +13,15 @@ const getTaskById = async (taskId: number): Promise<DatabaseTask> => {
   return res.data;
 };
 
+const createTask = async (data: any) => {
+  const res = await api.post(`${TASKS_API_URL}`, data);
+  if (res.status !== 200) {
+    throw new Error("Error when creating task");
+  }
+
+  return res.data;
+};
+
 const updateTaskById = async (taskId: number, data: any) => {
   const res = await api.patch(`${TASKS_API_URL}/${taskId}`, data);
   if (res.status !== 200) {
@@ -43,6 +52,7 @@ const getSubTaskRecommendations = async (taskId: number) => {
 
 export {
   getTaskById,
+  createTask,
   updateTaskById,
   deleteTaskById,
   getSubTaskRecommendations,

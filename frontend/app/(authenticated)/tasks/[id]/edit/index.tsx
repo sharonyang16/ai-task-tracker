@@ -3,17 +3,26 @@ import styles from "@/styles/global.styles";
 import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   Checkbox,
   CheckboxIcon,
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
-import { CheckIcon, ChevronDownIcon } from "@/components/ui/icon";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+} from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "@/components/ui/button";
 import {
   Select,
   SelectTrigger,
@@ -38,11 +47,11 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
+import { HStack } from "@/components/ui/hstack";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
   const taskId = Number(localId);
-
   const {
     title,
     setTitle,
@@ -62,6 +71,7 @@ export default function TaskDetailsEdit() {
     showDeleteConfirmation,
     setShowDeleteConfirmation,
   } = useEditPage(taskId);
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
@@ -70,6 +80,12 @@ export default function TaskDetailsEdit() {
       ) : (
         <ScrollView>
           <VStack space="md">
+            <HStack>
+              <Button variant="link" onPress={() => router.back()}>
+                <ButtonIcon size="lg" as={ChevronLeftIcon} />
+              </Button>
+            </HStack>
+
             <AlertDialog isOpen={showDeleteConfirmation} size="lg">
               <AlertDialogBackdrop />
               <AlertDialogContent>
