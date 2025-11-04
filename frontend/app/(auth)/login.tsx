@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Banner from "@/components/banner";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
@@ -11,7 +10,8 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
-import { CheckIcon } from "@/components/ui/icon";
+import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 
 export default function LoginScreen() {
   const {
@@ -31,7 +31,12 @@ export default function LoginScreen() {
       <Text style={styles.pageHeading}>Login</Text>
       <View style={styles.content}>
         <View style={authStyles.container}>
-          {!!errorMessage && <Banner text={errorMessage} alertType="warning" />}
+          {!!errorMessage && (
+            <Alert action="error">
+              <AlertIcon as={AlertCircleIcon} />
+              <AlertText>{errorMessage}</AlertText>
+            </Alert>
+          )}
           <TextInput
             style={authStyles.input}
             value={email}
