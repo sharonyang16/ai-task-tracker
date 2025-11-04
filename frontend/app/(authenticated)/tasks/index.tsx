@@ -1,12 +1,13 @@
 import TaskCard from "@/components/home/task-card";
 import useHomePage from "@/hooks/useHomePage";
 import React from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import styles from "@/styles/global.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Spinner } from "@/components/ui/spinner";
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
+import { VStack } from "@/components/ui/vstack";
 
 export default function HomeScreen() {
   const { tasks, isLoading, handleTaskCheckboxPress } = useHomePage();
@@ -19,8 +20,8 @@ export default function HomeScreen() {
       ) : tasks.length === 0 ? (
         <Text>No tasks found</Text>
       ) : (
-        <View>
-          <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <ScrollView>
+          <VStack space="md">
             {tasks.map((task) => (
               <TaskCard
                 task={task}
@@ -28,8 +29,8 @@ export default function HomeScreen() {
                 handleTaskCheckboxPress={handleTaskCheckboxPress}
               />
             ))}
-          </View>
-        </View>
+          </VStack>
+        </ScrollView>
       )}
     </SafeAreaView>
   );
