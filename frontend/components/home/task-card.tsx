@@ -1,8 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { Checkbox } from "expo-checkbox";
 import { Task } from "@/types/tasks";
 import { Link } from "expo-router";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+} from "@/components/ui/checkbox";
+import { CheckIcon } from "../ui/icon";
 
 type TaskCardProps = {
   task: Task;
@@ -34,10 +39,15 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
           }}
         >
           <Checkbox
-            value={task.isComplete}
-            onValueChange={(value) => handleTaskCheckboxPress(task.id, value)}
-            style={{ zIndex: 2 }}
-          />
+            value={task.isComplete.toString()}
+            isChecked={task.isComplete}
+            onChange={(value) => handleTaskCheckboxPress(task.id, value)}
+            size="md"
+          >
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+          </Checkbox>
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 600 }}>{task.title}</Text>
             {task.description && <Text>{task.description}</Text>}

@@ -1,12 +1,17 @@
 import React from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Button, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Checkbox } from "expo-checkbox";
 import Banner from "@/components/banner";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
-
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from "@/components/ui/checkbox";
+import { CheckIcon } from "@/components/ui/icon";
 
 export default function SignUpScreen() {
   const {
@@ -53,21 +58,17 @@ export default function SignUpScreen() {
             onChangeText={(text) => setConfirmPassword(text)}
             placeholder="confirm password"
           />
-          <View style={authStyles.checkbox}>
-            <Checkbox
-              value={staySignedIn}
-              onChange={() => setStaySignedIn(!staySignedIn)}
-              accessibilityLabelledBy="checkbox-label"
-            />
-            <Pressable onPress={() => setStaySignedIn(!staySignedIn)}>
-              <Text
-                accessibilityLabel="label for checkbox"
-                nativeID="checkbox-label"
-              >
-                Stay signed in?
-              </Text>
-            </Pressable>
-          </View>
+          <Checkbox
+            value={staySignedIn.toString()}
+            isChecked={staySignedIn}
+            onChange={(value) => setStaySignedIn(value)}
+            size="sm"
+          >
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+            <CheckboxLabel>Stay signed in?</CheckboxLabel>
+          </Checkbox>
 
           <Button title="Submit" onPress={handleSignUp} disabled={loading} />
         </View>

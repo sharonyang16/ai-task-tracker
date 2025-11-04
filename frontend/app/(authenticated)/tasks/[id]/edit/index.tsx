@@ -13,8 +13,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
-import { Checkbox } from "expo-checkbox";
 import { useLocalSearchParams } from "expo-router";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from "@/components/ui/checkbox";
+import { CheckIcon } from "@/components/ui/icon";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -75,18 +81,16 @@ export default function TaskDetailsEdit() {
           </Picker>
           <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
             <Checkbox
-              value={isComplete || false}
-              onValueChange={(value) => setIsComplete(value)}
-              accessibilityLabelledBy="checkbox-label"
-            />
-            <Pressable onPress={() => setIsComplete(!isComplete)}>
-              <Text
-                accessibilityLabel="label for checkbox"
-                nativeID="checkbox-label"
-              >
-                Done?
-              </Text>
-            </Pressable>
+              value={isComplete?.toString() || ""}
+              isChecked={isComplete || false}
+              onChange={(value) => setIsComplete(value)}
+              size="md"
+            >
+              <CheckboxIndicator>
+                <CheckboxIcon as={CheckIcon} />
+              </CheckboxIndicator>
+              <CheckboxLabel>Done?</CheckboxLabel>
+            </Checkbox>
           </View>
 
           {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
