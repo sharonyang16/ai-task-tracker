@@ -1,9 +1,7 @@
 import useEditPage from "@/hooks/useEditPage";
 import styles from "@/styles/global.styles";
-
 import React from "react";
 import {
-  ActivityIndicator,
   Alert,
   Button,
   Pressable,
@@ -21,6 +19,7 @@ import {
 } from "@/components/ui/checkbox";
 import { CheckIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -57,11 +56,11 @@ export default function TaskDetailsEdit() {
   return (
     <SafeAreaView>
       {loading ? (
-        <ActivityIndicator size="large" />
+        <Spinner size="large" />
       ) : (
         <View style={styles.layoutContainer}>
           <Text style={styles.pageHeading}>{`Editing "${title}"`}</Text>
-          <Input >
+          <Input>
             <InputField
               type="text"
               value={title}

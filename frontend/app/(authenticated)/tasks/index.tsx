@@ -1,9 +1,10 @@
 import TaskCard from "@/components/home/task-card";
 import useHomePage from "@/hooks/useHomePage";
 import React from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View } from "react-native";
 import styles from "@/styles/global.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function HomeScreen() {
   const { tasks, isLoading, handleTaskCheckboxPress } = useHomePage();
@@ -12,7 +13,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Tasks</Text>
       {isLoading ? (
-        <ActivityIndicator size="large" />
+        <Spinner size="large" />
       ) : tasks.length === 0 ? (
         <Text>No tasks found</Text>
       ) : (
