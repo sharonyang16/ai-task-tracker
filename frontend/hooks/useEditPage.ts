@@ -109,6 +109,7 @@ const useEditPage = (taskId: number) => {
     if (task) {
       try {
         setLoading(true);
+        setShowDeleteConfirmation(false);
         await deleteTaskById(task.id);
         setLoading(false);
         router.push("/tasks");
