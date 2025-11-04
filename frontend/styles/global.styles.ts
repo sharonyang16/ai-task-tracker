@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingHorizontal: 16,
     paddingVertical: 24,
+
+    alignItems: "center",
+    height: "100%",
   },
   pageHeading: {
     fontSize: 24,

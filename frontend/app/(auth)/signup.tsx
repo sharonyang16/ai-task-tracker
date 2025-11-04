@@ -15,6 +15,9 @@ import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { Box } from "@/components/ui/box";
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
 
 export default function SignUpScreen() {
   const {
@@ -33,8 +36,8 @@ export default function SignUpScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Heading size="2xl">Sign Up</Heading>
-      <View>
+      <Box className="w-full gap-8">
+        <Heading size="2xl">Sign Up</Heading>
         <View style={authStyles.container}>
           {!!errorMessage && (
             <Alert action="error">
@@ -42,30 +45,40 @@ export default function SignUpScreen() {
               <AlertText>{errorMessage}</AlertText>
             </Alert>
           )}
-          <Input size="xl">
-            <InputField
-              type="text"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              placeholder="example@email.com"
-            />
-          </Input>
-          <Input size="xl">
-            <InputField
-              type={"password"}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="••••••"
-            />
-          </Input>
-          <Input size="xl">
-            <InputField
-              type={"password"}
-              value={confirmPassword}
-              onChangeText={(text) => setConfirmPassword(text)}
-              placeholder="••••••"
-            />
-          </Input>
+          <VStack>
+            <Text size="lg">Email</Text>
+            <Input size="xl">
+              <InputField
+                type="text"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                placeholder="example@email.com"
+              />
+            </Input>
+          </VStack>
+          <VStack>
+            <Text size="lg">Password</Text>
+            <Input size="xl">
+              <InputField
+                type={"password"}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                placeholder="••••••••"
+              />
+            </Input>
+          </VStack>
+          <VStack>
+            <Text size="lg">Confirm Password</Text>
+            <Input size="xl">
+              <InputField
+                type={"password"}
+                value={confirmPassword}
+                onChangeText={(text) => setConfirmPassword(text)}
+                placeholder="••••••••"
+              />
+            </Input>
+          </VStack>
+
           <Checkbox
             value={staySignedIn.toString()}
             isChecked={staySignedIn}
@@ -80,7 +93,7 @@ export default function SignUpScreen() {
             <ButtonText>{loading ? <ButtonSpinner /> : "Sign Up"}</ButtonText>
           </Button>
         </View>
-      </View>
+      </Box>
     </SafeAreaView>
   );
 }

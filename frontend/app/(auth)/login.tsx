@@ -15,6 +15,9 @@ import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonText, ButtonSpinner } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { Box } from "@/components/ui/box";
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
 
 export default function LoginScreen() {
   const {
@@ -31,31 +34,31 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Heading size="2xl">Login</Heading>
-      <View >
-        <View style={authStyles.container}>
-          {!!errorMessage && (
-            <Alert action="error">
-              <AlertIcon as={AlertCircleIcon} />
-              <AlertText>{errorMessage}</AlertText>
-            </Alert>
-          )}
-          <Input size="xl">
-            <InputField
-              type="text"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              placeholder="example@email.com"
-            />
-          </Input>
-          <Input size="xl">
-            <InputField
-              type={"password"}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="••••••"
-            />
-          </Input>
+      <Box className="w-full gap-8">
+        <Heading size="2xl">Login</Heading>
+        <VStack style={authStyles.container}>
+          <VStack>
+            <Text size="lg">Email</Text>
+            <Input size="xl">
+              <InputField
+                type="text"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                placeholder="example@email.com"
+              />
+            </Input>
+          </VStack>
+          <VStack>
+            <Text size="lg">Password</Text>
+            <Input size="xl">
+              <InputField
+                type={"password"}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                placeholder="••••••••"
+              />
+            </Input>
+          </VStack>
           <Checkbox
             value={staySignedIn.toString()}
             isChecked={staySignedIn}
@@ -67,11 +70,17 @@ export default function LoginScreen() {
             <CheckboxLabel>Stay signed in?</CheckboxLabel>
           </Checkbox>
 
+          {!!errorMessage && (
+            <Alert action="error">
+              <AlertIcon as={AlertCircleIcon} />
+              <AlertText>{errorMessage}</AlertText>
+            </Alert>
+          )}
           <Button onPress={handleLogin} disabled={loading} size="lg">
             <ButtonText>{loading ? <ButtonSpinner /> : "Login"}</ButtonText>
           </Button>
-        </View>
-      </View>
+        </VStack>
+      </Box>
     </SafeAreaView>
   );
 }
