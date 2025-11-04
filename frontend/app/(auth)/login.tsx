@@ -6,6 +6,7 @@ import Banner from "@/components/banner";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
 import styles from "@/styles/global.styles";
+import { Center } from "@/components/ui/center";
 
 export default function LoginScreen() {
   const {
