@@ -11,10 +11,22 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
-import { CheckIcon } from "@/components/ui/icon";
+import { CheckIcon, ChevronDownIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -71,28 +83,34 @@ export default function TaskDetailsEdit() {
               placeholder="Get xyz done..."
             />
           </Input>
-          <Picker
-            selectedValue={size}
-            onValueChange={(itemValue) => setSize(itemValue)}
+          <Select selectedValue={size} onValueChange={setSize}>
+            <SelectTrigger>
+              <SelectInput placeholder="Task Size" />
+              <SelectIcon as={ChevronDownIcon} />
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                <SelectItem label="Small" value="SMALL" />
+                <SelectItem label="Medium" value="MEDIUM" />
+                <SelectItem label="Large" value="LARGE" />
+              </SelectContent>
+            </SelectPortal>
+          </Select>
+          <Checkbox
+            value={isComplete?.toString() || ""}
+            isChecked={isComplete || false}
+            onChange={(value) => setIsComplete(value)}
+            size="md"
           >
-            <Picker.Item label="Small" value="SMALL" />
-            <Picker.Item label="Medium" value="MEDIUM" />
-            <Picker.Item label="Large" value="LARGE" />
-          </Picker>
-          <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
-            <Checkbox
-              value={isComplete?.toString() || ""}
-              isChecked={isComplete || false}
-              onChange={(value) => setIsComplete(value)}
-              size="md"
-            >
-              <CheckboxIndicator>
-                <CheckboxIcon as={CheckIcon} />
-              </CheckboxIndicator>
-              <CheckboxLabel>Done?</CheckboxLabel>
-            </Checkbox>
-          </View>
-
+            <CheckboxIndicator>
+              <CheckboxIcon as={CheckIcon} />
+            </CheckboxIndicator>
+            <CheckboxLabel>Done?</CheckboxLabel>
+          </Checkbox>
           {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
             <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <Text> Subtasks</Text>
