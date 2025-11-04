@@ -24,6 +24,7 @@ const useEditPage = (taskId: number) => {
     UnAddedSubtask[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -94,6 +95,7 @@ const useEditPage = (taskId: number) => {
           size,
           is_complete: isComplete,
         });
+        router.push("/tasks");
       }
     }
   };
@@ -132,6 +134,8 @@ const useEditPage = (taskId: number) => {
     handleDelete,
     handleAddSubTask,
     newSubTasks,
+    showDeleteConfirmation,
+    setShowDeleteConfirmation,
   };
 };
 
