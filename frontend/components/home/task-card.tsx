@@ -36,6 +36,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
             display: "flex",
             flexDirection: "row",
             gap: 16,
+            alignItems: "flex-start",
           }}
         >
           <Checkbox
@@ -63,7 +64,18 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
                       gap: 16,
                     }}
                   >
-                    <Checkbox value={task.isComplete} />
+                    <Checkbox
+                      value={subtask.isComplete.toString()}
+                      isChecked={subtask.isComplete}
+                      onChange={(value) =>
+                        handleTaskCheckboxPress(task.id, value)
+                      }
+                      size="sm"
+                    >
+                      <CheckboxIndicator>
+                        <CheckboxIcon as={CheckIcon} />
+                      </CheckboxIndicator>
+                    </Checkbox>
                     <View style={{ flex: 1 }}>
                       <Text style={{ fontWeight: 600 }}>{subtask.title}</Text>
                       {subtask.description && (

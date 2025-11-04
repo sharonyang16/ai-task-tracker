@@ -23,7 +23,6 @@ export default function SignUpScreen() {
     setConfirmPassword,
     loading,
     errorMessage,
-    infoMessage,
     handleSignUp,
     staySignedIn,
     setStaySignedIn,
@@ -35,7 +34,7 @@ export default function SignUpScreen() {
       <View style={styles.content}>
         <View style={authStyles.container}>
           {!!errorMessage && <Banner text={errorMessage} alertType="warning" />}
-          {!!infoMessage && <Banner text={infoMessage} alertType="info" />}
+
           <TextInput
             style={authStyles.input}
             value={email}
