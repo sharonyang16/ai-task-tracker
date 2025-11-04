@@ -13,7 +13,6 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.layoutContainer}>
       <Text style={styles.pageHeading}>Profile</Text>
       <Text>{user?.email}</Text>
-
       <Button title="Sign Out" onPress={() => signOut()} disabled={loading} />
     </SafeAreaView>
   );

@@ -8,7 +8,6 @@ import {
   Button,
   Pressable,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,6 +20,7 @@ import {
   CheckboxLabel,
 } from "@/components/ui/checkbox";
 import { CheckIcon } from "@/components/ui/icon";
+import { Input, InputField } from "@/components/ui/input";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -61,16 +61,22 @@ export default function TaskDetailsEdit() {
       ) : (
         <View style={styles.layoutContainer}>
           <Text style={styles.pageHeading}>{`Editing "${title}"`}</Text>
-          <TextInput
-            value={title}
-            onChangeText={(text) => setTitle(text)}
-            placeholder="Task Description"
-          />
-          <TextInput
-            value={description}
-            onChangeText={(text) => setDescription(text)}
-            placeholder="Task Description"
-          />
+          <Input >
+            <InputField
+              type="text"
+              value={title}
+              onChangeText={(text) => setTitle(text)}
+              placeholder="Do some work"
+            />
+          </Input>
+          <Input>
+            <InputField
+              type="text"
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+              placeholder="Get xyz done..."
+            />
+          </Input>
           <Picker
             selectedValue={size}
             onValueChange={(itemValue) => setSize(itemValue)}
