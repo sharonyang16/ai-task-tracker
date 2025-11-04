@@ -7,7 +7,8 @@ import {
   CheckboxIcon,
   CheckboxIndicator,
 } from "@/components/ui/checkbox";
-import { CheckIcon } from "../ui/icon";
+import { CheckIcon } from "@/components/ui/icon";
+import { Card } from "@/components/ui/card";
 
 type TaskCardProps = {
   task: Task;
@@ -16,14 +17,7 @@ type TaskCardProps = {
 
 const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
   return (
-    <View
-      style={{
-        backgroundColor: "#EAEAEA",
-        padding: 16,
-        borderRadius: 8,
-        width: "100%",
-      }}
-    >
+    <Card>
       <View
         style={{
           display: "flex",
@@ -90,7 +84,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
         </View>
         <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
       </View>
-    </View>
+    </Card>
   );
 };
 
