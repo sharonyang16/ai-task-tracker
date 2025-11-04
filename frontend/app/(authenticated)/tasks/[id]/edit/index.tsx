@@ -1,9 +1,8 @@
 import useEditPage from "@/hooks/useEditPage";
 import styles from "@/styles/global.styles";
 import React from "react";
-import { Alert, Pressable, Text, View } from "react-native";
+import { Alert, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
 import {
   Checkbox,
@@ -28,6 +27,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -67,7 +68,8 @@ export default function TaskDetailsEdit() {
         <Spinner size="large" />
       ) : (
         <View style={styles.layoutContainer}>
-          <Text style={styles.pageHeading}>{`Editing "${title}"`}</Text>
+          <Heading size="2xl">{`Editing "${title}"`}</Heading>
+
           <Input>
             <InputField
               type="text"
@@ -113,7 +115,7 @@ export default function TaskDetailsEdit() {
           </Checkbox>
           {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
             <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Text> Subtasks</Text>
+              <Heading size="md">Subtasks</Heading>
               {subTasks.map((subTask) => (
                 <View
                   key={subTask.title}
@@ -126,7 +128,7 @@ export default function TaskDetailsEdit() {
                     borderRadius: 8,
                   }}
                 >
-                  <Text>{subTask.title}</Text>
+                  <Heading size="sm">{subTask.title}</Heading>
                   <Text>{subTask.description}</Text>
                 </View>
               ))}
@@ -142,7 +144,7 @@ export default function TaskDetailsEdit() {
                     borderRadius: 8,
                   }}
                 >
-                  <Text>{subTask.title}</Text>
+                  <Heading size="sm">{subTask.title}</Heading>
                   <Text>{subTask.description}</Text>
                 </View>
               ))}
@@ -151,7 +153,7 @@ export default function TaskDetailsEdit() {
 
           {recommendedSubTasks.length !== 0 && (
             <View style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Text> Recommended Subtasks</Text>
+              <Heading size="md">Recommended Subtasks</Heading>
               {recommendedSubTasks.map((subTask) => (
                 <Pressable
                   key={subTask.title}
@@ -167,7 +169,7 @@ export default function TaskDetailsEdit() {
                       borderRadius: 8,
                     }}
                   >
-                    <Text>{subTask.title}</Text>
+                    <Heading size="sm">{subTask.title}</Heading>
                     <Text>{subTask.description}</Text>
                   </View>
                 </Pressable>

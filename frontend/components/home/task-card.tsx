@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { Task } from "@/types/tasks";
 import { Link } from "expo-router";
 import {
@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/checkbox";
 import { CheckIcon } from "@/components/ui/icon";
 import { Card } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
+import { Heading } from "../ui/heading";
 
 type TaskCardProps = {
   task: Task;
@@ -19,6 +21,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
   return (
     <Card>
       <View
+        className="w-full"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -26,6 +29,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
         }}
       >
         <View
+          className="w-full"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -43,8 +47,11 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
               <CheckboxIcon as={CheckIcon} />
             </CheckboxIndicator>
           </Checkbox>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 600 }}>{task.title}</Text>
+          <View className="w-full">
+            <Heading size="lg" className="text-black">
+              {task.title}
+            </Heading>
+            <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
             {task.description && <Text>{task.description}</Text>}
             <Text>{task.size}</Text>
             {task.subTasks.length > 0 && (
@@ -55,7 +62,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
                     style={{
                       display: "flex",
                       flexDirection: "row",
-                      gap: 16,
+                      gap: 8,
                     }}
                   >
                     <Checkbox
@@ -82,8 +89,6 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
             )}
           </View>
         </View>
-
-        <Link href={`/tasks/${task.id}/edit`}>Edit</Link>
       </View>
     </Card>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -13,12 +13,8 @@ import {
 import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
-import {
-  Button,
-  ButtonText,
-  ButtonSpinner,
-  ButtonIcon,
-} from "@/components/ui/button";
+import { Button, ButtonText, ButtonSpinner } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 
 export default function LoginScreen() {
   const {
@@ -35,8 +31,8 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Text style={styles.pageHeading}>Login</Text>
-      <View style={styles.content}>
+      <Heading size="2xl">Login</Heading>
+      <View >
         <View style={authStyles.container}>
           {!!errorMessage && (
             <Alert action="error">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAuth from "@/hooks/useAuth";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -14,6 +14,7 @@ import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 
 export default function SignUpScreen() {
   const {
@@ -32,8 +33,8 @@ export default function SignUpScreen() {
 
   return (
     <SafeAreaView style={styles.layoutContainer}>
-      <Text style={styles.pageHeading}>Sign Up</Text>
-      <View style={styles.content}>
+      <Heading size="2xl">Sign Up</Heading>
+      <View>
         <View style={authStyles.container}>
           {!!errorMessage && (
             <Alert action="error">
