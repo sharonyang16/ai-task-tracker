@@ -8,10 +8,14 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
-import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import styles from "@/styles/global.styles";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -35,9 +39,17 @@ export default function SignUpScreen() {
   return (
     <SafeAreaView style={styles.layoutContainer}>
       <Heading size="2xl">Sign Up</Heading>
+      {!!errorMessage && (
+        <Alert action="error">
+          <AlertIcon as={AlertCircleIcon} />
+          <AlertText>{errorMessage}</AlertText>
+        </Alert>
+      )}
       <VStack style={authStyles.container}>
-        <VStack>
-          <Text size="lg">Email</Text>
+        <FormControl isRequired>
+          <FormControlLabel>
+            <FormControlLabelText>Email</FormControlLabelText>
+          </FormControlLabel>
           <Input size="xl">
             <InputField
               type="text"
@@ -46,9 +58,11 @@ export default function SignUpScreen() {
               placeholder="example@email.com"
             />
           </Input>
-        </VStack>
-        <VStack>
-          <Text size="lg">Password</Text>
+        </FormControl>
+        <FormControl isRequired>
+          <FormControlLabel>
+            <FormControlLabelText>Password</FormControlLabelText>
+          </FormControlLabel>
           <Input size="xl">
             <InputField
               type={"password"}
@@ -57,9 +71,11 @@ export default function SignUpScreen() {
               placeholder="••••••••"
             />
           </Input>
-        </VStack>
-        <VStack>
-          <Text size="lg">Confirm Password</Text>
+        </FormControl>
+        <FormControl isRequired>
+          <FormControlLabel>
+            <FormControlLabelText>Confirm Password</FormControlLabelText>
+          </FormControlLabel>
           <Input size="xl">
             <InputField
               type={"password"}
@@ -68,7 +84,7 @@ export default function SignUpScreen() {
               placeholder="••••••••"
             />
           </Input>
-        </VStack>
+        </FormControl>
         <Checkbox
           value={staySignedIn.toString()}
           isChecked={staySignedIn}
@@ -79,12 +95,7 @@ export default function SignUpScreen() {
           </CheckboxIndicator>
           <CheckboxLabel>Stay signed in?</CheckboxLabel>
         </Checkbox>
-        {!!errorMessage && (
-          <Alert action="error">
-            <AlertIcon as={AlertCircleIcon} />
-            <AlertText>{errorMessage}</AlertText>
-          </Alert>
-        )}
+
         <Button onPress={handleSignUp} disabled={loading} size="lg">
           <ButtonText>{loading ? <ButtonSpinner /> : "Sign Up"}</ButtonText>
         </Button>

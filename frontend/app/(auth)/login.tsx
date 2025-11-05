@@ -8,10 +8,14 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
-import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import styles from "@/styles/global.styles";
 import { default as authStyles } from "@/styles/auth.styles";
@@ -33,9 +37,17 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.layoutContainer}>
       <Heading size="2xl">Login</Heading>
+      {!!errorMessage && (
+        <Alert action="error">
+          <AlertIcon as={AlertCircleIcon} />
+          <AlertText>{errorMessage}</AlertText>
+        </Alert>
+      )}
       <VStack style={authStyles.container}>
-        <VStack>
-          <Text size="lg">Email</Text>
+        <FormControl isRequired>
+          <FormControlLabel>
+            <FormControlLabelText>Email</FormControlLabelText>
+          </FormControlLabel>
           <Input size="xl">
             <InputField
               type="text"
@@ -44,9 +56,12 @@ export default function LoginScreen() {
               placeholder="example@email.com"
             />
           </Input>
-        </VStack>
-        <VStack>
-          <Text size="lg">Password</Text>
+        </FormControl>
+
+        <FormControl isRequired>
+          <FormControlLabel>
+            <FormControlLabelText>Password</FormControlLabelText>
+          </FormControlLabel>
           <Input size="xl">
             <InputField
               type={"password"}
@@ -55,7 +70,7 @@ export default function LoginScreen() {
               placeholder="••••••••"
             />
           </Input>
-        </VStack>
+        </FormControl>
         <Checkbox
           value={staySignedIn.toString()}
           isChecked={staySignedIn}
@@ -66,12 +81,7 @@ export default function LoginScreen() {
           </CheckboxIndicator>
           <CheckboxLabel>Stay signed in?</CheckboxLabel>
         </Checkbox>
-        {!!errorMessage && (
-          <Alert action="error">
-            <AlertIcon as={AlertCircleIcon} />
-            <AlertText>{errorMessage}</AlertText>
-          </Alert>
-        )}
+
         <Button onPress={handleLogin} disabled={loading} size="lg">
           <ButtonText>{loading ? <ButtonSpinner /> : "Login"}</ButtonText>
         </Button>

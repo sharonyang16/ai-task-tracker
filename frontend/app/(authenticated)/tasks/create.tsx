@@ -8,6 +8,11 @@ import {
   ButtonText,
   ButtonSpinner,
 } from "@/components/ui/button";
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from "@/components/ui/form-control";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import {
@@ -28,7 +33,6 @@ import {
   SelectDragIndicator,
   SelectItem,
 } from "@/components/ui/select";
-import { Text } from "@/components/ui/text";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
 import styles from "@/styles/global.styles";
@@ -64,8 +68,10 @@ const CreatePage = () => {
               <AlertText>{errorMessage}</AlertText>
             </Alert>
           )}
-          <VStack>
-            <Text>Title</Text>
+          <FormControl isRequired>
+            <FormControlLabel>
+              <FormControlLabelText>Title</FormControlLabelText>
+            </FormControlLabel>
             <Input>
               <InputField
                 type="text"
@@ -74,10 +80,11 @@ const CreatePage = () => {
                 placeholder="Do some work"
               />
             </Input>
-          </VStack>
-
-          <VStack>
-            <Text>Description</Text>
+          </FormControl>
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText>Description</FormControlLabelText>
+            </FormControlLabel>
             <Textarea>
               <TextareaInput
                 value={description || ""}
@@ -85,10 +92,11 @@ const CreatePage = () => {
                 placeholder="Get xyz done..."
               />
             </Textarea>
-          </VStack>
-
-          <VStack>
-            <Text>Size</Text>
+          </FormControl>
+          <FormControl isRequired>
+            <FormControlLabel>
+              <FormControlLabelText>Size</FormControlLabelText>
+            </FormControlLabel>
             <Select selectedValue={size} onValueChange={setSize}>
               <SelectTrigger>
                 <SelectInput placeholder="Task Size" />
@@ -106,7 +114,7 @@ const CreatePage = () => {
                 </SelectContent>
               </SelectPortal>
             </Select>
-          </VStack>
+          </FormControl>
 
           <Button onPress={() => handleCreate()} disabled={loading} size="lg">
             <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
