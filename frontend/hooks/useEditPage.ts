@@ -78,7 +78,6 @@ const useEditPage = (taskId: number) => {
     if (task && task.size !== "SMALL") {
       fetchRecommendations();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task]);
 
   const handleSave = async () => {
