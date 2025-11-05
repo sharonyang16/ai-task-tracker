@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -25,9 +25,11 @@ import {
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import {
+  AddIcon,
   CheckIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
+  TrashIcon,
 } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import {
@@ -48,6 +50,7 @@ import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
 import styles from "@/styles/global.styles";
 import useEditPage from "@/hooks/useEditPage";
+import { Card } from "@/components/ui/card";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -154,71 +157,67 @@ export default function TaskDetailsEdit() {
               <CheckboxLabel>Done?</CheckboxLabel>
             </Checkbox>
             {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
-              <View
-                style={{ display: "flex", flexDirection: "column", gap: 8 }}
-              >
+              <VStack space="md">
                 <Heading size="md">Subtasks</Heading>
                 {subTasks.map((subTask) => (
-                  <View
-                    key={subTask.title}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 4,
-                      backgroundColor: "#EAEAEA",
-                      padding: 8,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Heading size="sm">{subTask.title}</Heading>
-                    <Text>{subTask.description}</Text>
-                  </View>
+                  <Card key={subTask.title}>
+                    <HStack space="md">
+                      <Button
+                        onPress={() => {
+                          /*remove exisiting subtask */
+                        }}
+                        variant="link"
+                      >
+                        <ButtonIcon size="md" as={TrashIcon} />
+                      </Button>
+                      <VStack>
+                        <Heading size="sm">{subTask.title}</Heading>
+                        <Text>{subTask.description}</Text>
+                      </VStack>
+                    </HStack>
+                  </Card>
                 ))}
                 {newSubTasks.map((subTask) => (
-                  <View
-                    key={subTask.title}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 4,
-                      backgroundColor: "#EAEAEA",
-                      padding: 8,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Heading size="sm">{subTask.title}</Heading>
-                    <Text>{subTask.description}</Text>
-                  </View>
+                  <Card key={subTask.title}>
+                    <HStack space="md">
+                      <Button
+                        onPress={() => {
+                          /*remove new subtask */
+                        }}
+                        variant="link"
+                      >
+                        <ButtonIcon size="md" as={TrashIcon} />
+                      </Button>
+                      <VStack>
+                        <Heading size="sm">{subTask.title}</Heading>
+                        <Text>{subTask.description}</Text>
+                      </VStack>
+                    </HStack>
+                  </Card>
                 ))}
-              </View>
+              </VStack>
             )}
 
             {recommendedSubTasks.length !== 0 && (
-              <View
-                style={{ display: "flex", flexDirection: "column", gap: 8 }}
-              >
+              <VStack space="md">
                 <Heading size="md">Recommended Subtasks</Heading>
                 {recommendedSubTasks.map((subTask) => (
-                  <Pressable
-                    key={subTask.title}
-                    onPress={() => handleAddSubTask(subTask)}
-                  >
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 4,
-                        backgroundColor: "#EAEAEA",
-                        padding: 8,
-                        borderRadius: 8,
-                      }}
-                    >
-                      <Heading size="sm">{subTask.title}</Heading>
-                      <Text>{subTask.description}</Text>
-                    </View>
-                  </Pressable>
+                  <Card key={subTask.title}>
+                    <HStack space="md">
+                      <Button
+                        onPress={() => handleAddSubTask(subTask)}
+                        variant="link"
+                      >
+                        <ButtonIcon size="md" as={AddIcon} />
+                      </Button>
+                      <VStack className="w-full">
+                        <Heading size="sm">{subTask.title}</Heading>
+                        <Text>{subTask.description}</Text>
+                      </VStack>
+                    </HStack>
+                  </Card>
                 ))}
-              </View>
+              </VStack>
             )}
             <Button onPress={() => handleSave} disabled={loading} size="lg">
               <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
@@ -230,7 +229,7 @@ export default function TaskDetailsEdit() {
               size="md"
               action="negative"
             >
-              <ButtonText>
+              <ButtonText className="text-red-600">
                 {loading ? <ButtonSpinner /> : "Delete Task"}
               </ButtonText>
             </Button>
