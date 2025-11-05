@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DatabaseTask, Task } from "@/types/tasks";
 import { useAuthContext } from "@/context/auth-context";
 import { getUserTasks } from "@/services/user-services";
-import { updateTaskById } from "@/services/task-services";
+import { updateTaskById, updateSubTaskById } from "@/services/task-services";
 
 const useHomePage = () => {
   const { user } = useAuthContext();
@@ -54,10 +54,42 @@ const useHomePage = () => {
     }
   };
 
+  const handleSubTaskCheckboxPress = async (
+    parentTaskId: number,
+    taskId: number,
+    value: boolean
+  ) => {
+    try {
+      await updateSubTaskById(taskId, {
+        is_complete: value,
+      });
+
+      setTasks((prev) =>
+        prev.map((task) => {
+          if (task.id === parentTaskId) {
+            return {
+              ...task,
+              subTasks: task.subTasks.map((subtask) => {
+                if (subtask.id === taskId) {
+                  return { ...subtask, isComplete: value };
+                }
+                return subtask;
+              }),
+            };
+          }
+          return task;
+        })
+      );
+    } catch {
+      // do nothing
+    }
+  };
+
   return {
     tasks,
     isLoading,
     handleTaskCheckboxPress,
+    handleSubTaskCheckboxPress,
   };
 };
 

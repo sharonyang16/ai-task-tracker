@@ -31,6 +31,15 @@ const updateTaskById = async (taskId: number, data: any) => {
   return res.data;
 };
 
+const updateSubTaskById = async (taskId: number, data: any) => {
+  const res = await api.patch(`${TASKS_API_URL}/subtasks/${taskId}`, data);
+  if (res.status !== 200) {
+    throw new Error("Error when updating subtask");
+  }
+
+  return res.data;
+};
+
 const deleteTaskById = async (taskId: number) => {
   const res = await api.delete(`${TASKS_API_URL}/${taskId}`);
   if (res.status !== 200) {
@@ -56,4 +65,5 @@ export {
   updateTaskById,
   deleteTaskById,
   getSubTaskRecommendations,
+  updateSubTaskById,
 };

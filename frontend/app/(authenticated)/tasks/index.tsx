@@ -13,7 +13,12 @@ import styles from "@/styles/global.styles";
 import useHomePage from "@/hooks/useHomePage";
 
 export default function HomeScreen() {
-  const { tasks, isLoading, handleTaskCheckboxPress } = useHomePage();
+  const {
+    tasks,
+    isLoading,
+    handleTaskCheckboxPress,
+    handleSubTaskCheckboxPress,
+  } = useHomePage();
   const router = useRouter();
 
   return (
@@ -31,6 +36,7 @@ export default function HomeScreen() {
                 task={task}
                 key={task.id}
                 handleTaskCheckboxPress={handleTaskCheckboxPress}
+                handleSubTaskCheckboxPress={handleSubTaskCheckboxPress}
               />
             ))}
           </VStack>

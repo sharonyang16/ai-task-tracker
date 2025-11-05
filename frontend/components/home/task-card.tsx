@@ -19,9 +19,18 @@ import { VStack } from "@/components/ui/vstack";
 type TaskCardProps = {
   task: Task;
   handleTaskCheckboxPress: (taskId: number, value: boolean) => void;
+  handleSubTaskCheckboxPress: (
+    parentTaskId: number,
+    taskId: number,
+    value: boolean
+  ) => void;
 };
 
-const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
+const TaskCard = ({
+  task,
+  handleTaskCheckboxPress,
+  handleSubTaskCheckboxPress,
+}: TaskCardProps) => {
   const router = useRouter();
 
   return (
@@ -80,7 +89,7 @@ const TaskCard = ({ task, handleTaskCheckboxPress }: TaskCardProps) => {
                       value={subtask.isComplete.toString()}
                       isChecked={subtask.isComplete}
                       onChange={(value) =>
-                        handleTaskCheckboxPress(task.id, value)
+                        handleSubTaskCheckboxPress(task.id, subtask.id, value)
                       }
                       size="sm"
                     >
