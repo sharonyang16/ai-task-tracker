@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import { SubTask, Task } from "@/types/tasks";
 import {
   deleteTaskById,
   getSubTaskRecommendations,
   getTaskById,
   updateTaskById,
 } from "@/services/task-services";
-import { useEffect, useState } from "react";
-import { SubTask, Task } from "@/types/tasks";
-import { useRouter } from "expo-router";
 
 type UnAddedSubtask = {
   title: string;
@@ -78,7 +78,6 @@ const useEditPage = (taskId: number) => {
     if (task && task.size !== "SMALL") {
       fetchRecommendations();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task]);
 
   const handleSave = async () => {

@@ -1,21 +1,21 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useAuth from "@/hooks/useAuth";
-import { default as authStyles } from "@/styles/auth.styles";
-import styles from "@/styles/global.styles";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { Button, ButtonText, ButtonSpinner } from "@/components/ui/button";
 import {
   Checkbox,
   CheckboxIcon,
   CheckboxIndicator,
   CheckboxLabel,
 } from "@/components/ui/checkbox";
-import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
-import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
-import { Input, InputField } from "@/components/ui/input";
-import { Button, ButtonText, ButtonSpinner } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { VStack } from "@/components/ui/vstack";
+import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
+import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import styles from "@/styles/global.styles";
+import { default as authStyles } from "@/styles/auth.styles";
+import useAuth from "@/hooks/useAuth";
 
 export default function LoginScreen() {
   const {

@@ -1,21 +1,20 @@
 import React from "react";
 import { View } from "react-native";
+import { useRouter } from "expo-router";
 import { Task } from "@/types/tasks";
-import { Link, useRouter } from "expo-router";
+import { Badge, BadgeText } from "@/components/ui/badge";
+import { Button, ButtonIcon } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Checkbox,
   CheckboxIcon,
   CheckboxIndicator,
 } from "@/components/ui/checkbox";
-import { CheckIcon, EditIcon } from "@/components/ui/icon";
-import { Card } from "@/components/ui/card";
-import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
-
-import { VStack } from "@/components/ui/vstack";
 import { HStack } from "@/components/ui/hstack";
-import { Badge, BadgeText } from "../ui/badge";
-import { Button, ButtonIcon } from "../ui/button";
+import { CheckIcon, EditIcon } from "@/components/ui/icon";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 
 type TaskCardProps = {
   task: Task;
