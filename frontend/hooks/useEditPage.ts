@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import { SubTask, Task } from "@/types/tasks";
 import {
   deleteTaskById,
   getSubTaskRecommendations,
   getTaskById,
   updateTaskById,
 } from "@/services/task-services";
-import { useEffect, useState } from "react";
-import { SubTask, Task } from "@/types/tasks";
-import { useRouter } from "expo-router";
 
 type UnAddedSubtask = {
   title: string;

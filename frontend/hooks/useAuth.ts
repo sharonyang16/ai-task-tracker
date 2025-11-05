@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { useAuthContext } from "@/context/auth-context";
 import { signUp, login, logout, checkSession } from "@/services/user-services";
+import { useAuthContext } from "@/context/auth-context";
 import useSecureStorage from "@/lib/secure-storage/secure-storage";
 
 const useAuth = () => {

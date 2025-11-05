@@ -1,28 +1,35 @@
-import useEditPage from "@/hooks/useEditPage";
-import styles from "@/styles/global.styles";
 import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  Checkbox,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-} from "@/components/ui/checkbox";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-} from "@/components/ui/icon";
-import { Input, InputField } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
 import {
   Button,
   ButtonIcon,
   ButtonSpinner,
   ButtonText,
 } from "@/components/ui/button";
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from "@/components/ui/checkbox";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+} from "@/components/ui/icon";
+import { Input, InputField } from "@/components/ui/input";
 import {
   Select,
   SelectTrigger,
@@ -35,19 +42,12 @@ import {
   SelectDragIndicator,
   SelectItem,
 } from "@/components/ui/select";
-import { Textarea, TextareaInput } from "@/components/ui/textarea";
+import { Spinner } from "@/components/ui/spinner";
 import { Text } from "@/components/ui/text";
-import { Heading } from "@/components/ui/heading";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
-import { HStack } from "@/components/ui/hstack";
+import styles from "@/styles/global.styles";
+import useEditPage from "@/hooks/useEditPage";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;

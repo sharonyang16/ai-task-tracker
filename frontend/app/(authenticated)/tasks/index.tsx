@@ -1,16 +1,16 @@
-import TaskCard from "@/components/home/task-card";
-import useHomePage from "@/hooks/useHomePage";
 import React from "react";
 import { ScrollView } from "react-native";
-import styles from "@/styles/global.styles";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Fab, FabIcon } from "@/components/ui/fab";
+import { Heading } from "@/components/ui/heading";
+import { AddIcon } from "@/components/ui/icon";
 import { Spinner } from "@/components/ui/spinner";
 import { Text } from "@/components/ui/text";
-import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
-import { Fab, FabIcon } from "@/components/ui/fab";
-import { AddIcon } from "@/components/ui/icon";
-import { useRouter } from "expo-router";
+import TaskCard from "@/components/home/task-card";
+import styles from "@/styles/global.styles";
+import useHomePage from "@/hooks/useHomePage";
 
 export default function HomeScreen() {
   const { tasks, isLoading, handleTaskCheckboxPress } = useHomePage();

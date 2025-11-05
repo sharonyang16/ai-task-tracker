@@ -1,3 +1,6 @@
+import React from "react";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import {
   Button,
@@ -5,13 +8,12 @@ import {
   ButtonText,
   ButtonSpinner,
 } from "@/components/ui/button";
-
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import {
-  ChevronLeftIcon,
-  ChevronDownIcon,
   AlertCircleIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
 } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import {
@@ -26,14 +28,11 @@ import {
   SelectDragIndicator,
   SelectItem,
 } from "@/components/ui/select";
+import { Text } from "@/components/ui/text";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
-import useCreatePage from "@/hooks/useCreatePage";
 import styles from "@/styles/global.styles";
-import React from "react";
-import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "@/components/ui/text";
+import useCreatePage from "@/hooks/useCreatePage";
 
 const CreatePage = () => {
   const {
