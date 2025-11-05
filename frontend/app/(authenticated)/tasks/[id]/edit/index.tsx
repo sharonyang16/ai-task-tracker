@@ -51,6 +51,11 @@ import { VStack } from "@/components/ui/vstack";
 import styles from "@/styles/global.styles";
 import useEditPage from "@/hooks/useEditPage";
 import { Card } from "@/components/ui/card";
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from "@/components/ui/form-control";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
@@ -113,49 +118,70 @@ export default function TaskDetailsEdit() {
               </AlertDialogContent>
             </AlertDialog>
             <Heading size="2xl">{`Editing "${title}"`}</Heading>
-            <Input>
-              <InputField
-                type="text"
-                value={title}
-                onChangeText={(text) => setTitle(text)}
-                placeholder="Do some work"
-              />
-            </Input>
-            <Textarea>
-              <TextareaInput
-                value={description}
-                onChangeText={(text) => setDescription(text)}
-                placeholder="Get xyz done..."
-              />
-            </Textarea>
-            <Select selectedValue={size} onValueChange={setSize}>
-              <SelectTrigger>
-                <SelectInput placeholder="Task Size" />
-                <SelectIcon as={ChevronDownIcon} />
-              </SelectTrigger>
-              <SelectPortal>
-                <SelectBackdrop />
-                <SelectContent>
-                  <SelectDragIndicatorWrapper>
-                    <SelectDragIndicator />
-                  </SelectDragIndicatorWrapper>
-                  <SelectItem label="Small" value="SMALL" />
-                  <SelectItem label="Medium" value="MEDIUM" />
-                  <SelectItem label="Large" value="LARGE" />
-                </SelectContent>
-              </SelectPortal>
-            </Select>
-            <Checkbox
-              value={isComplete?.toString() || ""}
-              isChecked={isComplete || false}
-              onChange={(value) => setIsComplete(value)}
-              size="md"
-            >
-              <CheckboxIndicator>
-                <CheckboxIcon as={CheckIcon} />
-              </CheckboxIndicator>
-              <CheckboxLabel>Done?</CheckboxLabel>
-            </Checkbox>
+            <FormControl isRequired>
+              <FormControlLabel>
+                <FormControlLabelText>Title</FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  type="text"
+                  value={title}
+                  onChangeText={(text) => setTitle(text)}
+                  placeholder="Do some work"
+                />
+              </Input>
+            </FormControl>
+            <FormControl>
+              <FormControlLabel>
+                <FormControlLabelText>Description</FormControlLabelText>
+              </FormControlLabel>
+              <Textarea>
+                <TextareaInput
+                  value={description}
+                  onChangeText={(text) => setDescription(text)}
+                  placeholder="Get xyz done..."
+                />
+              </Textarea>
+            </FormControl>
+            <FormControl isRequired>
+              <FormControlLabel>
+                <FormControlLabelText>Size</FormControlLabelText>
+              </FormControlLabel>
+              <Select selectedValue={size} onValueChange={setSize}>
+                <SelectTrigger>
+                  <SelectInput placeholder="Task Size" />
+                  <SelectIcon as={ChevronDownIcon} />
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    <SelectItem label="Small" value="SMALL" />
+                    <SelectItem label="Medium" value="MEDIUM" />
+                    <SelectItem label="Large" value="LARGE" />
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormControlLabel>
+                <FormControlLabelText>Status</FormControlLabelText>
+              </FormControlLabel>
+              <Checkbox
+                value={isComplete?.toString() || ""}
+                isChecked={isComplete || false}
+                onChange={(value) => setIsComplete(value)}
+                size="lg"
+              >
+                <CheckboxIndicator>
+                  <CheckboxIcon as={CheckIcon} />
+                </CheckboxIndicator>
+                <CheckboxLabel>Done?</CheckboxLabel>
+              </Checkbox>
+            </FormControl>
+
             {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
               <VStack space="md">
                 <Heading size="md">Subtasks</Heading>
