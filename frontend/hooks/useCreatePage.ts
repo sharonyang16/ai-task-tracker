@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { createTask } from "@/services/task-services";
+import { createTask, createSubTaskForTask } from "@/services/task-services";
 import { useAuthContext } from "@/context/auth-context";
+import { UnaddedSubtask } from "@/types/tasks";
 
 const useCreatePage = () => {
   const [title, setTitle] = useState<string>("");
@@ -9,6 +10,8 @@ const useCreatePage = () => {
   const [size, setSize] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [subtasks, setSubTasks] = useState<UnaddedSubtask[]>([]);
+
   const router = useRouter();
   const { user } = useAuthContext();
 
@@ -22,12 +25,22 @@ const useCreatePage = () => {
     setLoading(true);
 
     try {
-      await createTask({
+      const newTask = await createTask({
         title,
         description,
         creator: user?.id,
         size,
       });
+
+      await Promise.all(
+        subtasks.map((subtask) =>
+          createSubTaskForTask(newTask.id, {
+            title: subtask.title,
+            description: subtask.description,
+          })
+        )
+      );
+
       setLoading(false);
       router.back();
     } catch (e) {
@@ -44,6 +57,25 @@ const useCreatePage = () => {
     setErrorMessage("");
   };
 
+  const handleAddSubtask = () => {
+    setSubTasks((prev) => [...prev, { title: "", description: "" }]);
+  };
+
+  const handleRemoveSubtask = (index: number) => {
+    setSubTasks((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubtaskChange = (index: number, field: string, value: string) => {
+    setSubTasks((prev) =>
+      prev.map((subtask, i) => {
+        if (i === index) {
+          return { ...subtask, [field]: value };
+        }
+        return subtask;
+      })
+    );
+  };
+
   return {
     title,
     setTitle,
@@ -51,6 +83,10 @@ const useCreatePage = () => {
     setDescription,
     size,
     setSize,
+    subtasks,
+    handleAddSubtask,
+    handleSubtaskChange,
+    handleRemoveSubtask,
     errorMessage,
     loading,
     handleCreate,

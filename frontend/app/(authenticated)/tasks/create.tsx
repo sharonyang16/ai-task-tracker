@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
+import SubtaskEditCard from "@/components/subtask-card";
 import styles from "@/styles/global.styles";
 import useCreatePage from "@/hooks/useCreatePage";
 
@@ -46,6 +47,10 @@ const CreatePage = () => {
     setDescription,
     size,
     setSize,
+    subtasks,
+    handleAddSubtask,
+    handleRemoveSubtask,
+    handleSubtaskChange,
     errorMessage,
     loading,
     handleCreate,
@@ -114,6 +119,33 @@ const CreatePage = () => {
                 </SelectContent>
               </SelectPortal>
             </Select>
+          </FormControl>
+
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText>Subtasks</FormControlLabelText>
+            </FormControlLabel>
+            <VStack space="md">
+              <VStack space="md">
+                {subtasks.map((subtask, index) => (
+                  <SubtaskEditCard
+                    key={index}
+                    title={subtask.title}
+                    description={subtask.description}
+                    setTitle={(title: string) =>
+                      handleSubtaskChange(index, "title", title)
+                    }
+                    setDescription={(description: string) =>
+                      handleSubtaskChange(index, "description", description)
+                    }
+                    handleDelete={() => handleRemoveSubtask(index)}
+                  />
+                ))}
+              </VStack>
+              <Button onPress={() => handleAddSubtask()} variant="outline">
+                <ButtonText>Add Subtask</ButtonText>
+              </Button>
+            </VStack>
           </FormControl>
 
           <Button onPress={() => handleCreate()} disabled={loading} size="lg">

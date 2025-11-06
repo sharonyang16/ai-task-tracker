@@ -39,3 +39,8 @@ export type Task = {
 };
 
 export type TASK_SIZE = "SMALL" | "MEDIUM" | "LARGE";
+
+export type UnaddedSubtask = {
+  title: string;
+  description?: string;
+};
