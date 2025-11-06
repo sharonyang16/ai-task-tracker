@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { SubTask, Task } from "@/types/tasks";
+import { SubTask, Task, UnaddedSubtask } from "@/types/tasks";
 import {
   deleteTaskById,
   getSubTaskRecommendations,
@@ -8,10 +8,6 @@ import {
   updateTaskById,
 } from "@/services/task-services";
 
-type UnAddedSubtask = {
-  title: string;
-  description: string;
-};
 const useEditPage = (taskId: number) => {
   const [task, setTask] = useState<Task | null>(null);
   const [title, setTitle] = useState<string>("");
@@ -19,9 +15,9 @@ const useEditPage = (taskId: number) => {
   const [size, setSize] = useState<string | null>(null);
   const [isComplete, setIsComplete] = useState<boolean | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[]>([]);
-  const [newSubTasks, setNewSubTasks] = useState<UnAddedSubtask[]>([]);
+  const [newSubTasks, setNewSubTasks] = useState<UnaddedSubtask[]>([]);
   const [recommendedSubTasks, setRecommendedSubTasks] = useState<
-    UnAddedSubtask[]
+    UnaddedSubtask[]
   >([]);
   const [loading, setLoading] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -63,7 +59,7 @@ const useEditPage = (taskId: number) => {
       if (task) {
         try {
           setLoading(true);
-          const res: UnAddedSubtask[] = await getSubTaskRecommendations(
+          const res: UnaddedSubtask[] = await getSubTaskRecommendations(
             task.id
           );
           setRecommendedSubTasks(res);
@@ -99,11 +95,37 @@ const useEditPage = (taskId: number) => {
     }
   };
 
-  const handleAddSubTask = async (subtask: UnAddedSubtask) => {
+  const handleAddSubTask = async (subtask: UnaddedSubtask) => {
     setNewSubTasks((prev) => [subtask, ...prev]);
     setRecommendedSubTasks((prev) => prev.filter((s) => s !== subtask));
   };
 
+  const handleSubtaskChange = (
+    index: number,
+    field: string,
+    value: string,
+    isNew: boolean
+  ) => {
+    if (isNew) {
+      setNewSubTasks((prev) =>
+        prev.map((subtask, i) => {
+          if (i === index) {
+            return { ...subtask, [field]: value };
+          }
+          return subtask;
+        })
+      );
+    } else {
+      setSubTasks((prev) =>
+        prev.map((subtask, i) => {
+          if (i === index) {
+            return { ...subtask, [field]: value };
+          }
+          return subtask;
+        })
+      );
+    }
+  };
   const handleDelete = async () => {
     if (task) {
       try {
@@ -132,6 +154,7 @@ const useEditPage = (taskId: number) => {
     loading,
     handleSave,
     handleDelete,
+    handleSubtaskChange,
     handleAddSubTask,
     newSubTasks,
     showDeleteConfirmation,

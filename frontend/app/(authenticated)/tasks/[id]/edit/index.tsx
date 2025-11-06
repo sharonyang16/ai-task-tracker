@@ -182,47 +182,51 @@ export default function TaskDetailsEdit() {
               </Checkbox>
             </FormControl>
 
-            {(subTasks.length !== 0 || newSubTasks.length !== 0) && (
-              <VStack space="md">
-                <Heading size="md">Subtasks</Heading>
-                {subTasks.map((subTask) => (
-                  <Card key={subTask.title}>
-                    <HStack space="md">
-                      <Button
-                        onPress={() => {
-                          /*remove exisiting subtask */
-                        }}
-                        variant="link"
-                      >
-                        <ButtonIcon size="md" as={TrashIcon} />
-                      </Button>
-                      <VStack>
-                        <Heading size="sm">{subTask.title}</Heading>
-                        <Text>{subTask.description}</Text>
-                      </VStack>
-                    </HStack>
-                  </Card>
-                ))}
-                {newSubTasks.map((subTask) => (
-                  <Card key={subTask.title}>
-                    <HStack space="md">
-                      <Button
-                        onPress={() => {
-                          /*remove new subtask */
-                        }}
-                        variant="link"
-                      >
-                        <ButtonIcon size="md" as={TrashIcon} />
-                      </Button>
-                      <VStack>
-                        <Heading size="sm">{subTask.title}</Heading>
-                        <Text>{subTask.description}</Text>
-                      </VStack>
-                    </HStack>
-                  </Card>
-                ))}
-              </VStack>
-            )}
+            <VStack space="md">
+              <Heading size="md">Subtasks</Heading>
+              {subTasks.map((subTask) => (
+                <Card key={subTask.title}>
+                  <HStack space="md">
+                    <Button
+                      onPress={() => {
+                        /*remove exisiting subtask */
+                      }}
+                      variant="link"
+                    >
+                      <ButtonIcon size="md" as={TrashIcon} />
+                    </Button>
+                    <VStack>
+                      <Heading size="sm">{subTask.title}</Heading>
+                      <Text>{subTask.description}</Text>
+                    </VStack>
+                  </HStack>
+                </Card>
+              ))}
+              {newSubTasks.map((subTask) => (
+                <Card key={subTask.title}>
+                  <HStack space="md">
+                    <Button
+                      onPress={() => {
+                        /*remove new subtask */
+                      }}
+                      variant="link"
+                    >
+                      <ButtonIcon size="md" as={TrashIcon} />
+                    </Button>
+                    <VStack>
+                      <Heading size="sm">{subTask.title}</Heading>
+                      <Text>{subTask.description}</Text>
+                    </VStack>
+                  </HStack>
+                </Card>
+              ))}
+              <Button
+                onPress={() => handleAddSubTask({ title: "", description: "" })}
+                variant="outline"
+              >
+                <ButtonText>Add Subtask</ButtonText>
+              </Button>
+            </VStack>
 
             {recommendedSubTasks.length !== 0 && (
               <VStack space="md">
