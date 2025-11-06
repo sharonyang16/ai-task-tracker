@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { createTask } from "@/services/task-services";
+import { createTask, createSubTaskForTask } from "@/services/task-services";
 import { useAuthContext } from "@/context/auth-context";
 import { UnaddedSubtask } from "@/types/tasks";
 
@@ -25,12 +25,22 @@ const useCreatePage = () => {
     setLoading(true);
 
     try {
-      await createTask({
+      const newTask = await createTask({
         title,
         description,
         creator: user?.id,
         size,
       });
+
+      await Promise.all(
+        subtasks.map((subtask) =>
+          createSubTaskForTask(newTask.id, {
+            title: subtask.title,
+            description: subtask.description,
+          })
+        )
+      );
+
       setLoading(false);
       router.back();
     } catch (e) {
