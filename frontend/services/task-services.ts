@@ -49,6 +49,15 @@ const updateSubTaskById = async (taskId: number, data: any) => {
   return res.data;
 };
 
+const deleteSubtaskById = async (taskId: number) => {
+  const res = await api.delete(`${TASKS_API_URL}/subtasks/${taskId}`);
+  if (res.status !== 200) {
+    throw new Error("Error when deleting subtask");
+  }
+
+  return res.data;
+};
+
 const deleteTaskById = async (taskId: number) => {
   const res = await api.delete(`${TASKS_API_URL}/${taskId}`);
   if (res.status !== 200) {
@@ -76,4 +85,5 @@ export {
   getSubTaskRecommendations,
   updateSubTaskById,
   createSubTaskForTask,
+  deleteSubtaskById,
 };

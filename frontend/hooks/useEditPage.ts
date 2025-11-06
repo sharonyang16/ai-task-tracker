@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
 import { SubTask, Task, UnaddedSubtask } from "@/types/tasks";
 import {
+  deleteSubtaskById,
   deleteTaskById,
   getSubTaskRecommendations,
   getTaskById,
+  updateSubTaskById,
   updateTaskById,
+  createSubTaskForTask,
 } from "@/services/task-services";
 
 const useEditPage = (taskId: number) => {
@@ -23,7 +26,33 @@ const useEditPage = (taskId: number) => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const router = useRouter();
 
+  const setDefaultValues = () => {
+    setTask(null);
+    setTitle("");
+    setDescription("");
+    setSize("");
+    setIsComplete(null);
+    setSubTasks([]);
+    setNewSubTasks([]);
+    setRecommendedSubTasks([]);
+  };
+
+  const fetchRecommendations = async () => {
+    if (task) {
+      try {
+        setLoading(true);
+        const res: UnaddedSubtask[] = await getSubTaskRecommendations(task.id);
+        setRecommendedSubTasks(res);
+        setLoading(false);
+      } catch {
+        setRecommendedSubTasks([]);
+        setLoading(false);
+      }
+    }
+  };
+
   const fetchTask = async () => {
+    setDefaultValues();
     setLoading(true);
     console.log(taskId);
     const res = await getTaskById(taskId);
@@ -48,6 +77,10 @@ const useEditPage = (taskId: number) => {
     setIsComplete(processedData.isComplete);
     setSubTasks(processedData.subTasks);
 
+    if (processedData.size === "SMALL") {
+      fetchRecommendations();
+    }
+
     setLoading(false);
   };
 
@@ -56,44 +89,54 @@ const useEditPage = (taskId: number) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskId]);
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      if (task) {
-        try {
-          setLoading(true);
-          const res: UnaddedSubtask[] = await getSubTaskRecommendations(
-            task.id
-          );
-          setRecommendedSubTasks(res);
-          setLoading(false);
-        } catch {
-          setRecommendedSubTasks([]);
-          setLoading(false);
-        }
-      }
-    };
-
-    if (task && task.size !== "SMALL") {
-      fetchRecommendations();
-    }
-  }, [task]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTask();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  );
 
   const handleSave = async () => {
     if (task) {
-      if (
-        title !== task.title ||
-        description !== task.description ||
-        size !== task.size ||
-        isComplete !== task.isComplete
-      ) {
-        await updateTaskById(task.id, {
-          title,
-          description,
-          size,
-          is_complete: isComplete,
-        });
-        router.push("/tasks");
-      }
+      // update parent task
+      await updateTaskById(task.id, {
+        title,
+        description,
+        size,
+        is_complete: isComplete,
+      });
+
+      // update existing subtasks
+      await Promise.all(
+        subTasks.map((subtask) =>
+          updateSubTaskById(subtask.id, {
+            title: subtask.title,
+            description: subtask.description,
+            is_complete: subtask.isComplete,
+          })
+        )
+      );
+
+      // delete existing deleted subtasks
+      await Promise.all(
+        task.subTasks
+          .filter((originalSubtask) =>
+            subTasks.every((newSubtask) => originalSubtask.id !== newSubtask.id)
+          )
+          .map((subtask) => deleteSubtaskById(subtask.id))
+      );
+
+      // create new subtasks
+      await Promise.all(
+        newSubTasks.map((subtask) =>
+          createSubTaskForTask(task.id, {
+            title: subtask.title,
+            description: subtask.description,
+          })
+        )
+      );
+
+      router.push("/tasks");
     }
   };
 
