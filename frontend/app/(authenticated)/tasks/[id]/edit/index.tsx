@@ -58,8 +58,8 @@ import {
 import SubtaskEditCard from "@/components/subtask-card";
 
 export default function TaskDetailsEdit() {
-  const localId = useLocalSearchParams().id;
-  const taskId = Number(localId);
+  const { id } = useLocalSearchParams();
+  const taskId = Number(id);
 
   const {
     title,

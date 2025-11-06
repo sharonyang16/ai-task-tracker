@@ -23,37 +23,39 @@ const useEditPage = (taskId: number) => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchTask = async () => {
-      setLoading(true);
-      const res = await getTaskById(taskId);
+  const fetchTask = async () => {
+    setLoading(true);
+    console.log(taskId);
+    const res = await getTaskById(taskId);
 
-      const processedData: Task = {
-        ...res,
-        createdAt: new Date(res.created_at),
-        subTasks: res.sub_tasks.map((subtask) => ({
-          ...subtask,
-          createdAt: new Date(subtask.created_at),
-          parentTaskId: subtask.parent_task_id,
-          isComplete: subtask.is_complete,
-        })),
-        createdBy: res.created_by,
-        isComplete: res.is_complete,
-      };
-
-      setTask(processedData);
-      setTitle(processedData.title);
-      setDescription(processedData.description || "");
-      setSize(processedData.size);
-      setIsComplete(processedData.isComplete);
-      setSubTasks(processedData.subTasks);
-
-      setLoading(false);
+    const processedData: Task = {
+      ...res,
+      createdAt: new Date(res.created_at),
+      subTasks: res.sub_tasks.map((subtask) => ({
+        ...subtask,
+        createdAt: new Date(subtask.created_at),
+        parentTaskId: subtask.parent_task_id,
+        isComplete: subtask.is_complete,
+      })),
+      createdBy: res.created_by,
+      isComplete: res.is_complete,
     };
 
+    setTask(processedData);
+    setTitle(processedData.title);
+    setDescription(processedData.description || "");
+    setSize(processedData.size);
+    setIsComplete(processedData.isComplete);
+    setSubTasks(processedData.subTasks);
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
     fetchTask();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [taskId]);
+
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (task) {
