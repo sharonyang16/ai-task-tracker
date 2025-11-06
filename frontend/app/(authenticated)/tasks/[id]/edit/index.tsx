@@ -29,7 +29,6 @@ import {
   CheckIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
-  TrashIcon,
 } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import {
@@ -56,10 +55,12 @@ import {
   FormControlLabel,
   FormControlLabelText,
 } from "@/components/ui/form-control";
+import SubtaskEditCard from "@/components/subtask-card";
 
 export default function TaskDetailsEdit() {
   const localId = useLocalSearchParams().id;
   const taskId = Number(localId);
+
   const {
     title,
     setTitle,
@@ -78,6 +79,8 @@ export default function TaskDetailsEdit() {
     newSubTasks,
     showDeleteConfirmation,
     setShowDeleteConfirmation,
+    handleSubtaskChange,
+    handleSubtaskDelete,
   } = useEditPage(taskId);
   const router = useRouter();
 
@@ -184,41 +187,43 @@ export default function TaskDetailsEdit() {
 
             <VStack space="md">
               <Heading size="md">Subtasks</Heading>
-              {subTasks.map((subTask) => (
-                <Card key={subTask.title}>
-                  <HStack space="md">
-                    <Button
-                      onPress={() => {
-                        /*remove exisiting subtask */
-                      }}
-                      variant="link"
-                    >
-                      <ButtonIcon size="md" as={TrashIcon} />
-                    </Button>
-                    <VStack>
-                      <Heading size="sm">{subTask.title}</Heading>
-                      <Text>{subTask.description}</Text>
-                    </VStack>
-                  </HStack>
-                </Card>
+              {subTasks.map((subTask, index) => (
+                <SubtaskEditCard
+                  key={subTask.title}
+                  title={subTask.title}
+                  description={subTask.description}
+                  setTitle={(title: string): void => {
+                    handleSubtaskChange(index, "title", title, false);
+                  }}
+                  setDescription={(description: string): void => {
+                    handleSubtaskChange(
+                      index,
+                      "description",
+                      description,
+                      false
+                    );
+                  }}
+                  handleDelete={() => handleSubtaskDelete(index, false)}
+                />
               ))}
-              {newSubTasks.map((subTask) => (
-                <Card key={subTask.title}>
-                  <HStack space="md">
-                    <Button
-                      onPress={() => {
-                        /*remove new subtask */
-                      }}
-                      variant="link"
-                    >
-                      <ButtonIcon size="md" as={TrashIcon} />
-                    </Button>
-                    <VStack>
-                      <Heading size="sm">{subTask.title}</Heading>
-                      <Text>{subTask.description}</Text>
-                    </VStack>
-                  </HStack>
-                </Card>
+              {newSubTasks.map((subTask, index) => (
+                <SubtaskEditCard
+                  key={subTask.title}
+                  title={subTask.title}
+                  description={subTask.description}
+                  setTitle={(title: string): void => {
+                    handleSubtaskChange(index, "title", title, true);
+                  }}
+                  setDescription={(description: string): void => {
+                    handleSubtaskChange(
+                      index,
+                      "description",
+                      description,
+                      true
+                    );
+                  }}
+                  handleDelete={() => handleSubtaskDelete(index, true)}
+                />
               ))}
               <Button
                 onPress={() => handleAddSubTask({ title: "", description: "" })}

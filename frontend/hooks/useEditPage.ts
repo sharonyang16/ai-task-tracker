@@ -126,6 +126,14 @@ const useEditPage = (taskId: number) => {
       );
     }
   };
+
+  const handleSubtaskDelete = (index: number, isNew: boolean) => {
+    if (isNew) {
+      setNewSubTasks((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setSubTasks((prev) => prev.filter((_, i) => i !== index));
+    }
+  };
   const handleDelete = async () => {
     if (task) {
       try {
@@ -155,6 +163,7 @@ const useEditPage = (taskId: number) => {
     handleSave,
     handleDelete,
     handleSubtaskChange,
+    handleSubtaskDelete,
     handleAddSubTask,
     newSubTasks,
     showDeleteConfirmation,
