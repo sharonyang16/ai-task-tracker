@@ -245,7 +245,7 @@ export default function TaskDetailsEdit() {
                 ))}
               </VStack>
             )}
-            <Button onPress={() => handleSave} disabled={loading} size="lg">
+            <Button onPress={() => handleSave()} disabled={loading} size="lg">
               <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
             </Button>
             <Button
