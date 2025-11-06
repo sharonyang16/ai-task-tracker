@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
 import { DatabaseTask, Task } from "@/types/tasks";
 import { useAuthContext } from "@/context/auth-context";
 import { getUserTasks } from "@/services/user-services";
@@ -9,31 +10,39 @@ const useHomePage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchTasks = async () => {
+    if (user !== null) {
+      setIsLoading(true);
+      const res = await getUserTasks(user.id);
+      const processedData: Task[] = res.map((dbTask: DatabaseTask) => ({
+        ...dbTask,
+        createdAt: new Date(dbTask.created_at),
+        subTasks: dbTask.sub_tasks.map((subtask) => ({
+          ...subtask,
+          createdAt: new Date(subtask.created_at),
+          parentTaskId: subtask.parent_task_id,
+          isComplete: subtask.is_complete,
+        })),
+        createdBy: dbTask.created_by,
+        isComplete: dbTask.is_complete,
+      }));
+
+      setTasks(processedData);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      if (user !== null) {
-        setIsLoading(true);
-        const res = await getUserTasks(user.id);
-        const processedData: Task[] = res.map((dbTask: DatabaseTask) => ({
-          ...dbTask,
-          createdAt: new Date(dbTask.created_at),
-          subTasks: dbTask.sub_tasks.map((subtask) => ({
-            ...subtask,
-            createdAt: new Date(subtask.created_at),
-            parentTaskId: subtask.parent_task_id,
-            isComplete: subtask.is_complete,
-          })),
-          createdBy: dbTask.created_by,
-          isComplete: dbTask.is_complete,
-        }));
-
-        setTasks(processedData);
-        setIsLoading(false);
-      }
-    };
-
     fetchTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchTasks();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
+  );
 
   const handleTaskCheckboxPress = async (taskId: number, value: boolean) => {
     try {
