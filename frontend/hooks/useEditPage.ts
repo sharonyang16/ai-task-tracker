@@ -93,7 +93,7 @@ const useEditPage = (taskId: number) => {
     useCallback(() => {
       fetchTask();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [taskId])
   );
 
   const handleSave = async () => {
