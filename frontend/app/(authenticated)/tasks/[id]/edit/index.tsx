@@ -191,7 +191,7 @@ export default function TaskDetailsEdit() {
               </FormControlLabel>
               {subTasks.map((subTask, index) => (
                 <SubtaskEditCard
-                  key={subTask.title}
+                  key={"subtask-" + index}
                   title={subTask.title}
                   description={subTask.description}
                   setTitle={(title: string): void => {
@@ -210,7 +210,7 @@ export default function TaskDetailsEdit() {
               ))}
               {newSubTasks.map((subTask, index) => (
                 <SubtaskEditCard
-                  key={subTask.title}
+                  key={"new-subtask-" + index}
                   title={subTask.title}
                   description={subTask.description}
                   setTitle={(title: string): void => {
