@@ -185,8 +185,10 @@ export default function TaskDetailsEdit() {
               </Checkbox>
             </FormControl>
 
-            <VStack space="md">
-              <Heading size="md">Subtasks</Heading>
+            <FormControl isRequired>
+              <FormControlLabel>
+                <FormControlLabelText>Subtasks</FormControlLabelText>
+              </FormControlLabel>
               {subTasks.map((subTask, index) => (
                 <SubtaskEditCard
                   key={subTask.title}
@@ -231,7 +233,7 @@ export default function TaskDetailsEdit() {
               >
                 <ButtonText>Add Subtask</ButtonText>
               </Button>
-            </VStack>
+            </FormControl>
 
             {recommendedSubTasks.length !== 0 && (
               <VStack space="md">
