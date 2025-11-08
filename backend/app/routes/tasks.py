@@ -64,11 +64,15 @@ class UpdateParentTaskRequestBody(UpdateTaskRequestBody):
         yield self.sub_tasks
         yield self.size
 
+
 class RecommendationFilterParams(BaseModel):
     category: str
 
+
 @router.get("/recommendation")
-async def get_task_recommendation(filter: Annotated[RecommendationFilterParams, Query()]):
+async def get_task_recommendation(
+    filter: Annotated[RecommendationFilterParams, Query()],
+):
     try:
         category = filter.category
         return get_recommendation(category)
@@ -205,5 +209,3 @@ async def get_subtask_recommendations(taskId: int):
             status_code=400,
             content={"message": str(e)},
         )
-
-
