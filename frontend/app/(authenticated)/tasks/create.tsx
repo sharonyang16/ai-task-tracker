@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { Box } from "@/components/ui/box";
 import {
   Button,
   ButtonIcon,
@@ -35,9 +36,19 @@ import {
 } from "@/components/ui/select";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
+import { RECOMMENDED_TASK_CATEGORY } from "@/types/tasks";
 import SubtaskEditCard from "@/components/subtask-card";
 import styles from "@/styles/global.styles";
 import useCreatePage from "@/hooks/useCreatePage";
+
+const categoryOptions: RECOMMENDED_TASK_CATEGORY[] = [
+  "WELLNESS",
+  "LEARNING",
+  "ERRANDS",
+  "FITNESS",
+  "CAREER",
+  "CHORES",
+];
 
 const CreatePage = () => {
   const {
@@ -55,6 +66,9 @@ const CreatePage = () => {
     loading,
     handleCreate,
     handleGoBack,
+    handleGetRecommendation,
+    handleClear,
+    generating,
   } = useCreatePage();
 
   return (
@@ -66,7 +80,38 @@ const CreatePage = () => {
               <ButtonIcon size="lg" as={ChevronLeftIcon} />
             </Button>
           </HStack>
-          <Heading size="2xl">Creating Task</Heading>
+          <Box className="flex flex-row justify-between">
+            <Heading size="2xl">Creating Task</Heading>
+            <Button
+              onPress={() => handleClear()}
+              isDisabled={generating || loading}
+              variant="outline"
+            >
+              <ButtonText>Clear</ButtonText>
+            </Button>
+          </Box>
+
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText>Generate Ideas</FormControlLabelText>
+            </FormControlLabel>
+            <Box className="flex flex-row gap-2 flex-wrap">
+              {categoryOptions.map((cat) => (
+                <Button
+                  key={`${cat}`}
+                  size="sm"
+                  className="w-fit rounded-full bg-gradient-to-r from-blue-700 to-fuchsia-700"
+                  onPress={() => handleGetRecommendation(cat)}
+                  isDisabled={generating || loading}
+                >
+                  <ButtonText>
+                    {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+                  </ButtonText>
+                </Button>
+              ))}
+            </Box>
+          </FormControl>
+
           {!!errorMessage && (
             <Alert action="error">
               <AlertIcon as={AlertCircleIcon} />
@@ -83,6 +128,7 @@ const CreatePage = () => {
                 value={title}
                 onChangeText={(text) => setTitle(text)}
                 placeholder="Do some work"
+                disabled={generating || loading}
               />
             </Input>
           </FormControl>
@@ -95,6 +141,7 @@ const CreatePage = () => {
                 value={description || ""}
                 onChangeText={(text) => setDescription(text)}
                 placeholder="Get xyz done..."
+                disabled={generating || loading}
               />
             </Textarea>
           </FormControl>
@@ -102,7 +149,11 @@ const CreatePage = () => {
             <FormControlLabel>
               <FormControlLabelText>Size</FormControlLabelText>
             </FormControlLabel>
-            <Select selectedValue={size} onValueChange={setSize}>
+            <Select
+              selectedValue={size}
+              onValueChange={setSize}
+              isDisabled={generating || loading}
+            >
               <SelectTrigger>
                 <SelectInput placeholder="Task Size" />
                 <SelectIcon as={ChevronDownIcon} />
@@ -142,13 +193,21 @@ const CreatePage = () => {
                   />
                 ))}
               </VStack>
-              <Button onPress={() => handleAddSubtask()} variant="outline">
+              <Button
+                onPress={() => handleAddSubtask()}
+                variant="outline"
+                isDisabled={generating || loading}
+              >
                 <ButtonText>Add Subtask</ButtonText>
               </Button>
             </VStack>
           </FormControl>
 
-          <Button onPress={() => handleCreate()} disabled={loading} size="lg">
+          <Button
+            onPress={() => handleCreate()}
+            isDisabled={loading || generating}
+            size="lg"
+          >
             <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
           </Button>
         </VStack>
