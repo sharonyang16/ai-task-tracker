@@ -122,13 +122,12 @@ const CreatePage = () => {
             <FormControlLabel>
               <FormControlLabelText>Title</FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input isDisabled={generating || loading}>
               <InputField
                 type="text"
                 value={title}
                 onChangeText={(text) => setTitle(text)}
                 placeholder="Do some work"
-                disabled={generating || loading}
               />
             </Input>
           </FormControl>
@@ -136,12 +135,11 @@ const CreatePage = () => {
             <FormControlLabel>
               <FormControlLabelText>Description</FormControlLabelText>
             </FormControlLabel>
-            <Textarea>
+            <Textarea isDisabled={generating || loading}>
               <TextareaInput
                 value={description || ""}
                 onChangeText={(text) => setDescription(text)}
                 placeholder="Get xyz done..."
-                disabled={generating || loading}
               />
             </Textarea>
           </FormControl>
@@ -190,6 +188,7 @@ const CreatePage = () => {
                       handleSubtaskChange(index, "description", description)
                     }
                     handleDelete={() => handleRemoveSubtask(index)}
+                    loading={generating || loading}
                   />
                 ))}
               </VStack>
