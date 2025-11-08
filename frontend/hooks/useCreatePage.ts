@@ -12,9 +12,10 @@ const useCreatePage = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string | null>(null);
   const [size, setSize] = useState<string>("");
+  const [subtasks, setSubTasks] = useState<UnaddedSubtask[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [subtasks, setSubTasks] = useState<UnaddedSubtask[]>([]);
+  const [generating, setGenerating] = useState(false);
 
   const router = useRouter();
   const { user } = useAuthContext();
@@ -83,14 +84,21 @@ const useCreatePage = () => {
   const handleGetRecommendation = async (
     category: RECOMMENDED_TASK_CATEGORY
   ) => {
-    setLoading(true);
-    
+    setGenerating(true);
+
     const recommendedTask = await getTaskRecommendation(category);
     setTitle(recommendedTask.title);
     setDescription(recommendedTask.description);
     setSize("SMALL");
 
-    setLoading(false);
+    setGenerating(false);
+  };
+
+  const handleClear = () => {
+    setTitle("");
+    setDescription(null);
+    setSize("");
+    setSubTasks([]);
   };
 
   return {
@@ -109,6 +117,8 @@ const useCreatePage = () => {
     handleCreate,
     handleGoBack,
     handleGetRecommendation,
+    handleClear,
+    generating,
   };
 };
 

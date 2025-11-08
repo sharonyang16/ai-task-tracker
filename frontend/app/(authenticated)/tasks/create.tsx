@@ -67,6 +67,8 @@ const CreatePage = () => {
     handleCreate,
     handleGoBack,
     handleGetRecommendation,
+    handleClear,
+    generating,
   } = useCreatePage();
 
   return (
@@ -78,7 +80,16 @@ const CreatePage = () => {
               <ButtonIcon size="lg" as={ChevronLeftIcon} />
             </Button>
           </HStack>
-          <Heading size="2xl">Creating Task</Heading>
+          <Box className="flex flex-row justify-between">
+            <Heading size="2xl">Creating Task</Heading>
+            <Button
+              onPress={() => handleClear()}
+              isDisabled={generating || loading}
+              variant="outline"
+            >
+              <ButtonText>Clear</ButtonText>
+            </Button>
+          </Box>
 
           <FormControl>
             <FormControlLabel>
@@ -91,6 +102,7 @@ const CreatePage = () => {
                   size="sm"
                   className="w-fit rounded-full bg-gradient-to-r from-blue-700 to-fuchsia-700"
                   onPress={() => handleGetRecommendation(cat)}
+                  isDisabled={generating || loading}
                 >
                   <ButtonText>
                     {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
@@ -116,6 +128,7 @@ const CreatePage = () => {
                 value={title}
                 onChangeText={(text) => setTitle(text)}
                 placeholder="Do some work"
+                disabled={generating || loading}
               />
             </Input>
           </FormControl>
@@ -128,6 +141,7 @@ const CreatePage = () => {
                 value={description || ""}
                 onChangeText={(text) => setDescription(text)}
                 placeholder="Get xyz done..."
+                disabled={generating || loading}
               />
             </Textarea>
           </FormControl>
@@ -135,7 +149,11 @@ const CreatePage = () => {
             <FormControlLabel>
               <FormControlLabelText>Size</FormControlLabelText>
             </FormControlLabel>
-            <Select selectedValue={size} onValueChange={setSize}>
+            <Select
+              selectedValue={size}
+              onValueChange={setSize}
+              isDisabled={generating || loading}
+            >
               <SelectTrigger>
                 <SelectInput placeholder="Task Size" />
                 <SelectIcon as={ChevronDownIcon} />
@@ -175,13 +193,21 @@ const CreatePage = () => {
                   />
                 ))}
               </VStack>
-              <Button onPress={() => handleAddSubtask()} variant="outline">
+              <Button
+                onPress={() => handleAddSubtask()}
+                variant="outline"
+                isDisabled={generating || loading}
+              >
                 <ButtonText>Add Subtask</ButtonText>
               </Button>
             </VStack>
           </FormControl>
 
-          <Button onPress={() => handleCreate()} disabled={loading} size="lg">
+          <Button
+            onPress={() => handleCreate()}
+            isDisabled={loading || generating}
+            size="lg"
+          >
             <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
           </Button>
         </VStack>
