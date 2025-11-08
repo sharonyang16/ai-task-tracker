@@ -56,6 +56,7 @@ import {
   FormControlLabelText,
 } from "@/components/ui/form-control";
 import SubtaskEditCard from "@/components/subtask-card";
+import AiStarIcon from "@/components/ai-star-icon";
 
 export default function TaskDetailsEdit() {
   const { id } = useLocalSearchParams();
@@ -190,7 +191,7 @@ export default function TaskDetailsEdit() {
               </Checkbox>
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl>
               <FormControlLabel>
                 <FormControlLabelText>Subtasks</FormControlLabelText>
               </FormControlLabel>
@@ -244,25 +245,32 @@ export default function TaskDetailsEdit() {
             </FormControl>
 
             {recommendedSubTasks.length !== 0 && (
-              <VStack space="md">
-                <Heading size="md">Recommended Subtasks</Heading>
-                {recommendedSubTasks.map((subTask) => (
-                  <Card key={subTask.title}>
-                    <HStack space="md">
-                      <Button
-                        onPress={() => handleAddSubTask(subTask)}
-                        variant="link"
-                      >
-                        <ButtonIcon size="md" as={AddIcon} />
-                      </Button>
-                      <VStack className="w-full">
-                        <Heading size="sm">{subTask.title}</Heading>
-                        <Text>{subTask.description}</Text>
-                      </VStack>
-                    </HStack>
-                  </Card>
-                ))}
-              </VStack>
+              <FormControl>
+                <FormControlLabel className="flex flex-row gap-2">
+                  <AiStarIcon />
+                  <FormControlLabelText>
+                    Recommended Subtasks
+                  </FormControlLabelText>
+                </FormControlLabel>
+                <VStack space="md">
+                  {recommendedSubTasks.map((subTask) => (
+                    <Card key={subTask.title}>
+                      <HStack space="md">
+                        <Button
+                          onPress={() => handleAddSubTask(subTask)}
+                          variant="link"
+                        >
+                          <ButtonIcon size="md" as={AddIcon} />
+                        </Button>
+                        <VStack className="w-full">
+                          <Heading size="sm">{subTask.title}</Heading>
+                          <Text>{subTask.description}</Text>
+                        </VStack>
+                      </HStack>
+                    </Card>
+                  ))}
+                </VStack>
+              </FormControl>
             )}
             <Button onPress={() => handleSave()} isDisabled={loading} size="lg">
               <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>

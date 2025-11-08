@@ -77,7 +77,7 @@ const useEditPage = (taskId: number) => {
     setIsComplete(processedData.isComplete);
     setSubTasks(processedData.subTasks);
 
-    if (processedData.size === "SMALL") {
+    if (processedData.size !== "SMALL") {
       fetchRecommendations();
     }
 
