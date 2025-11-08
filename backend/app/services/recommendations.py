@@ -20,7 +20,7 @@ def get_recommendations(taskId):
 
         ai_response = client.models.generate_content(
             model="gemini-2.5-flash-lite",
-            contents=f"Create 3 small sub-tasks recommendations for this larger task: {data["title"]} - {data["description"]} with a title and description for each task; separate the title and description using this delimiter: |&| and start each task on a new line  -- do not number or label the tasks, add any headers, or add filler text",
+            contents=f"Create 3 small sub-tasks recommendations for this larger task: {data["title"]} - {data["description"]} with a short and concise title and description for each task; separate the title and description using this delimiter: |&| and start each task on a new line  -- do not number or label the tasks, add any headers, or add filler text",
         )
 
         recommended_tasks = ai_response.candidates[0].content.parts[0].text.split("\n")
@@ -41,7 +41,7 @@ def get_recommendations(taskId):
 def get_recommendation(category):
     ai_response = client.models.generate_content(
         model="gemini-2.5-flash-lite",
-        contents=f"Create one small non-reoccuring task recommendation related to {category} with a title, description; separate the title and description using this delimiter: |&| -- do not number or label the tasks, add any headers, or add filler text",
+        contents=f"Create one small new non-reoccuring task recommendation related to {category} with a short, concise title and description; separate the title and description using this delimiter: |&| -- do not number or label the tasks, add any headers, or add filler text",
     )
 
     recommended_task = ai_response.candidates[0].content.parts[0].text.split("\n")[0]
@@ -54,4 +54,3 @@ def get_recommendation(category):
     }
 
     return recommended_task
-
