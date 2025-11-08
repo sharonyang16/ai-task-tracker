@@ -77,6 +77,18 @@ const getSubTaskRecommendations = async (taskId: number) => {
   return res.data;
 };
 
+const getTaskRecommendation = async (category: string) => {
+  const res = await api.get(
+    `${TASKS_API_URL}/recommendation?category=${category}`
+  );
+
+  if (res.status !== 200) {
+    throw new Error("Error when fetching task recommendation");
+  }
+
+  return res.data;
+};
+
 export {
   getTaskById,
   createTask,
@@ -86,4 +98,5 @@ export {
   updateSubTaskById,
   createSubTaskForTask,
   deleteSubtaskById,
+  getTaskRecommendation,
 };

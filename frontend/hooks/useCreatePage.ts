@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { createTask, createSubTaskForTask } from "@/services/task-services";
+import {
+  createTask,
+  createSubTaskForTask,
+  getTaskRecommendation,
+} from "@/services/task-services";
 import { useAuthContext } from "@/context/auth-context";
-import { UnaddedSubtask } from "@/types/tasks";
+import { RECOMMENDED_TASK_CATEGORY, UnaddedSubtask } from "@/types/tasks";
 
 const useCreatePage = () => {
   const [title, setTitle] = useState<string>("");
@@ -76,6 +80,19 @@ const useCreatePage = () => {
     );
   };
 
+  const handleGetRecommendation = async (
+    category: RECOMMENDED_TASK_CATEGORY
+  ) => {
+    setLoading(true);
+    
+    const recommendedTask = await getTaskRecommendation(category);
+    setTitle(recommendedTask.title);
+    setDescription(recommendedTask.description);
+    setSize("SMALL");
+
+    setLoading(false);
+  };
+
   return {
     title,
     setTitle,
@@ -91,6 +108,7 @@ const useCreatePage = () => {
     loading,
     handleCreate,
     handleGoBack,
+    handleGetRecommendation,
   };
 };
 

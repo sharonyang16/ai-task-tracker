@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { Box } from "@/components/ui/box";
 import {
   Button,
   ButtonIcon,
@@ -35,9 +36,19 @@ import {
 } from "@/components/ui/select";
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
+import { RECOMMENDED_TASK_CATEGORY } from "@/types/tasks";
 import SubtaskEditCard from "@/components/subtask-card";
 import styles from "@/styles/global.styles";
 import useCreatePage from "@/hooks/useCreatePage";
+
+const categoryOptions: RECOMMENDED_TASK_CATEGORY[] = [
+  "WELLNESS",
+  "LEARNING",
+  "ERRANDS",
+  "FITNESS",
+  "CAREER",
+  "CHORES",
+];
 
 const CreatePage = () => {
   const {
@@ -55,6 +66,7 @@ const CreatePage = () => {
     loading,
     handleCreate,
     handleGoBack,
+    handleGetRecommendation,
   } = useCreatePage();
 
   return (
@@ -67,6 +79,27 @@ const CreatePage = () => {
             </Button>
           </HStack>
           <Heading size="2xl">Creating Task</Heading>
+
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText>Generate Ideas</FormControlLabelText>
+            </FormControlLabel>
+            <Box className="flex flex-row gap-2 flex-wrap">
+              {categoryOptions.map((cat) => (
+                <Button
+                  key={`${cat}`}
+                  size="sm"
+                  className="w-fit rounded-full bg-gradient-to-r from-blue-700 to-fuchsia-700"
+                  onPress={() => handleGetRecommendation(cat)}
+                >
+                  <ButtonText>
+                    {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+                  </ButtonText>
+                </Button>
+              ))}
+            </Box>
+          </FormControl>
+
           {!!errorMessage && (
             <Alert action="error">
               <AlertIcon as={AlertCircleIcon} />

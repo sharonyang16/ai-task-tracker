@@ -44,3 +44,11 @@ export type UnaddedSubtask = {
   title: string;
   description?: string;
 };
+
+export type RECOMMENDED_TASK_CATEGORY =
+  | "WELLNESS"
+  | "LEARNING"
+  | "ERRANDS"
+  | "FITNESS"
+  | "CAREER"
+  | "CHORES";
