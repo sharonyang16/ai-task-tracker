@@ -40,6 +40,7 @@ import { RECOMMENDED_TASK_CATEGORY } from "@/types/tasks";
 import SubtaskEditCard from "@/components/subtask-card";
 import styles from "@/styles/global.styles";
 import useCreatePage from "@/hooks/useCreatePage";
+import AiStarIcon from "@/components/ai-star-icon";
 
 const categoryOptions: RECOMMENDED_TASK_CATEGORY[] = [
   "WELLNESS",
@@ -92,7 +93,8 @@ const CreatePage = () => {
           </Box>
 
           <FormControl>
-            <FormControlLabel>
+            <FormControlLabel className="flex flex-row gap-2">
+              <AiStarIcon />
               <FormControlLabelText>Generate Ideas</FormControlLabelText>
             </FormControlLabel>
             <Box className="flex flex-row gap-2 flex-wrap">
