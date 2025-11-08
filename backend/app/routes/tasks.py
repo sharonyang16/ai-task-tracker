@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Annotated, Optional
 from app.services.tasks import (
     get_tasks,
     create_new_task,
@@ -10,8 +10,8 @@ from app.services.tasks import (
     delete_task_by_id,
     delete_subtask_by_id,
 )
-from app.services.recommendations import get_recommendations
-from fastapi import APIRouter
+from app.services.recommendations import get_recommendations, get_task_recommendation
+from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from enum import Enum
@@ -63,6 +63,20 @@ class UpdateParentTaskRequestBody(UpdateTaskRequestBody):
         yield from super().__iter__()
         yield self.sub_tasks
         yield self.size
+
+class RecommendationFilterParams(BaseModel):
+    category: str
+
+@router.get("/recommendation")
+async def get_task_recommendations(filter: Annotated[RecommendationFilterParams, Query()]):
+    try:
+        category = filter.category
+        return get_task_recommendation(category)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
 
 
 @router.get("/")
@@ -170,6 +184,7 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
             content={"message": str(e)},
         )
 
+
 @router.delete("/subtasks/{taskId}")
 async def delete_subtask(taskId: int):
     try:
@@ -180,6 +195,7 @@ async def delete_subtask(taskId: int):
             content={"message": str(e)},
         )
 
+
 @router.get("/{taskId}/recommendations")
 async def get_subtask_recommendations(taskId: int):
     try:
@@ -189,3 +205,5 @@ async def get_subtask_recommendations(taskId: int):
             status_code=400,
             content={"message": str(e)},
         )
+
+

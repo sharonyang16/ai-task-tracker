@@ -118,9 +118,11 @@ def update_subtask_by_id(taskId, title, description, is_complete):
     )
     return response.data[0]
 
+
 def delete_task_by_id(taskId):
     response = supabase.table("tasks").delete().eq("id", taskId).execute()
     return response.data[0]
+
 
 def delete_subtask_by_id(taskId):
     response = supabase.table("sub_tasks").delete().eq("id", taskId).execute()
