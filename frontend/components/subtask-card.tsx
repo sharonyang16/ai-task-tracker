@@ -18,6 +18,7 @@ type SubtaskEditCardProps = {
   setTitle: (title: string) => void;
   setDescription: (description: string) => void;
   handleDelete: () => void;
+  loading: boolean;
 };
 
 const SubtaskEditCard = ({
@@ -26,6 +27,7 @@ const SubtaskEditCard = ({
   setTitle,
   setDescription,
   handleDelete,
+  loading,
 }: SubtaskEditCardProps) => {
   return (
     <Card>
@@ -35,6 +37,7 @@ const SubtaskEditCard = ({
             handleDelete();
           }}
           variant="link"
+          isDisabled={loading}
         >
           <ButtonIcon size="md" as={TrashIcon} />
         </Button>
@@ -43,7 +46,7 @@ const SubtaskEditCard = ({
             <FormControlLabel>
               <FormControlLabelText>Title</FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input isDisabled={loading}>
               <InputField
                 type="text"
                 value={title}
@@ -56,7 +59,7 @@ const SubtaskEditCard = ({
             <FormControlLabel>
               <FormControlLabelText>Description</FormControlLabelText>
             </FormControlLabel>
-            <Textarea>
+            <Textarea isDisabled={loading}>
               <TextareaInput
                 value={description || ""}
                 onChangeText={(text) => setDescription(text)}

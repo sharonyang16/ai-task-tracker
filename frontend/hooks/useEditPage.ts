@@ -128,12 +128,14 @@ const useEditPage = (taskId: number) => {
 
       // create new subtasks
       await Promise.all(
-        newSubTasks.map((subtask) =>
-          createSubTaskForTask(task.id, {
-            title: subtask.title,
-            description: subtask.description,
-          })
-        )
+        newSubTasks
+          .filter((subtask) => subtask.title)
+          .map((subtask) =>
+            createSubTaskForTask(task.id, {
+              title: subtask.title,
+              description: subtask.description,
+            })
+          )
       );
 
       router.push("/tasks");

@@ -38,12 +38,14 @@ const useCreatePage = () => {
       });
 
       await Promise.all(
-        subtasks.map((subtask) =>
-          createSubTaskForTask(newTask.id, {
-            title: subtask.title,
-            description: subtask.description,
-          })
-        )
+        subtasks
+          .filter((subtask) => subtask.title)
+          .map((subtask) =>
+            createSubTaskForTask(newTask.id, {
+              title: subtask.title,
+              description: subtask.description,
+            })
+          )
       );
 
       setLoading(false);

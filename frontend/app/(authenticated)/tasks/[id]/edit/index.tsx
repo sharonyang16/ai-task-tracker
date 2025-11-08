@@ -125,7 +125,7 @@ export default function TaskDetailsEdit() {
               <FormControlLabel>
                 <FormControlLabelText>Title</FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input isDisabled={loading}>
                 <InputField
                   type="text"
                   value={title}
@@ -138,7 +138,7 @@ export default function TaskDetailsEdit() {
               <FormControlLabel>
                 <FormControlLabelText>Description</FormControlLabelText>
               </FormControlLabel>
-              <Textarea>
+              <Textarea isDisabled={loading}>
                 <TextareaInput
                   value={description}
                   onChangeText={(text) => setDescription(text)}
@@ -150,7 +150,11 @@ export default function TaskDetailsEdit() {
               <FormControlLabel>
                 <FormControlLabelText>Size</FormControlLabelText>
               </FormControlLabel>
-              <Select selectedValue={size} onValueChange={setSize}>
+              <Select
+                selectedValue={size}
+                onValueChange={setSize}
+                isDisabled={loading}
+              >
                 <SelectTrigger>
                   <SelectInput placeholder="Task Size" />
                   <SelectIcon as={ChevronDownIcon} />
@@ -177,6 +181,7 @@ export default function TaskDetailsEdit() {
                 isChecked={isComplete || false}
                 onChange={(value) => setIsComplete(value)}
                 size="lg"
+                isDisabled={loading}
               >
                 <CheckboxIndicator>
                   <CheckboxIcon as={CheckIcon} />
@@ -206,6 +211,7 @@ export default function TaskDetailsEdit() {
                     );
                   }}
                   handleDelete={() => handleSubtaskDelete(index, false)}
+                  loading={loading}
                 />
               ))}
               {newSubTasks.map((subTask, index) => (
@@ -225,11 +231,13 @@ export default function TaskDetailsEdit() {
                     );
                   }}
                   handleDelete={() => handleSubtaskDelete(index, true)}
+                  loading={loading}
                 />
               ))}
               <Button
                 onPress={() => handleAddSubTask({ title: "", description: "" })}
                 variant="outline"
+                isDisabled={loading}
               >
                 <ButtonText>Add Subtask</ButtonText>
               </Button>
@@ -256,7 +264,7 @@ export default function TaskDetailsEdit() {
                 ))}
               </VStack>
             )}
-            <Button onPress={() => handleSave()} disabled={loading} size="lg">
+            <Button onPress={() => handleSave()} isDisabled={loading} size="lg">
               <ButtonText>{loading ? <ButtonSpinner /> : "Save"}</ButtonText>
             </Button>
             <Button
@@ -265,6 +273,7 @@ export default function TaskDetailsEdit() {
               variant="outline"
               size="md"
               action="negative"
+              isDisabled={loading}
             >
               <ButtonText className="text-red-600">
                 {loading ? <ButtonSpinner /> : "Delete Task"}
