@@ -38,7 +38,7 @@ def get_recommendations(taskId):
         return []
 
 
-def get_task_recommendation(category):
+def get_recommendation(category):
     ai_response = client.models.generate_content(
         model="gemini-2.5-flash-lite",
         contents=f"Create one small non-reoccuring task recommendation related to {category} with a title, description; separate the title and description using this delimiter: |&| -- do not number or label the tasks, add any headers, or add filler text",

@@ -10,7 +10,7 @@ from app.services.tasks import (
     delete_task_by_id,
     delete_subtask_by_id,
 )
-from app.services.recommendations import get_recommendations, get_task_recommendation
+from app.services.recommendations import get_recommendations, get_recommendation
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -68,10 +68,10 @@ class RecommendationFilterParams(BaseModel):
     category: str
 
 @router.get("/recommendation")
-async def get_task_recommendations(filter: Annotated[RecommendationFilterParams, Query()]):
+async def get_task_recommendation(filter: Annotated[RecommendationFilterParams, Query()]):
     try:
         category = filter.category
-        return get_task_recommendation(category)
+        return get_recommendation(category)
     except Exception as e:
         return JSONResponse(
             status_code=400,
