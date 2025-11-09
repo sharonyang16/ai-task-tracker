@@ -41,6 +41,7 @@ import SubtaskEditCard from "@/components/subtask-card";
 import styles from "@/styles/global.styles";
 import useCreatePage from "@/hooks/useCreatePage";
 import AiStarIcon from "@/components/ai-star-icon";
+import { LinearGradient } from "@/components/ui/linear-gradient";
 
 const categoryOptions: RECOMMENDED_TASK_CATEGORY[] = [
   "WELLNESS",
@@ -101,14 +102,22 @@ const CreatePage = () => {
               {categoryOptions.map((cat) => (
                 <Button
                   key={`${cat}`}
-                  size="sm"
-                  className="w-fit rounded-full bg-gradient-to-r from-blue-700 to-fuchsia-700"
+                  className="w-fit rounded-full"
+                  size="md"
                   onPress={() => handleGetRecommendation(cat)}
                   isDisabled={generating || loading}
+                  variant="link"
                 >
-                  <ButtonText>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
-                  </ButtonText>
+                  <LinearGradient
+                    className="w-fit rounded-full py-2 px-6"
+                    colors={["#125CDB", "#8C15D1", "#FF9100"]}
+                    start={[0, 1]}
+                    end={[1, 0]}
+                  >
+                    <ButtonText className="text-white">
+                      {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+                    </ButtonText>
+                  </LinearGradient>
                 </Button>
               ))}
             </Box>
