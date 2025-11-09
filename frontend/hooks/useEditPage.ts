@@ -54,7 +54,7 @@ const useEditPage = (taskId: number) => {
   const fetchTask = async () => {
     setDefaultValues();
     setLoading(true);
-    console.log(taskId);
+
     const res = await getTaskById(taskId);
 
     const processedData: Task = {
