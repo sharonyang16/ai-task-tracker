@@ -166,7 +166,7 @@ async def create_subtask(taskId: int, body: CreateTaskRequestBody):
         )
 
 
-@router.get("/subtasks/{taskId}")
+@router.get("/subtasks/{taskId}", deprecated=True)
 async def get_subtask(taskId: int):
     try:
         return get_subtask_by_id(taskId)
@@ -177,7 +177,7 @@ async def get_subtask(taskId: int):
         )
 
 
-@router.patch("/subtasks/{taskId}")
+@router.patch("/subtasks/{taskId}", deprecated=True)
 async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
     try:
         title, description, is_complete = body
@@ -189,7 +189,7 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
         )
 
 
-@router.delete("/subtasks/{taskId}")
+@router.delete("/subtasks/{taskId}", deprecated=True)
 async def delete_subtask(taskId: int):
     try:
         return delete_subtask_by_id(taskId)
