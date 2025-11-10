@@ -148,7 +148,7 @@ async def delete_task(taskId: int):
         )
 
 
-@router.post("/{taskId}/subtask")
+@router.post("/{taskId}/subtask", deprecated=True)
 async def create_subtask(taskId: int, body: CreateTaskRequestBody):
     try:
         title, description = body
@@ -166,7 +166,25 @@ async def create_subtask(taskId: int, body: CreateTaskRequestBody):
         )
 
 
-@router.get("/subtasks/{taskId}")
+@router.post("/{taskId}/subtasks")
+async def create_subtask(taskId: int, body: CreateTaskRequestBody):
+    try:
+        title, description = body
+        if not title:
+            return JSONResponse(
+                status_code=400,
+                content={"message": "title is required"},
+            )
+
+        return create_new_subtask(title, description, taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.get("/subtasks/{taskId}", deprecated=True)
 async def get_subtask(taskId: int):
     try:
         return get_subtask_by_id(taskId)
@@ -177,7 +195,18 @@ async def get_subtask(taskId: int):
         )
 
 
-@router.patch("/subtasks/{taskId}")
+@router.get("/{taskId}/subtasks/{subtaskId}")
+async def get_subtask(taskId: int, subtaskId: int):
+    try:
+        return get_subtask_by_id(subtaskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.patch("/subtasks/{taskId}", deprecated=True)
 async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
     try:
         title, description, is_complete = body
@@ -189,10 +218,33 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
         )
 
 
-@router.delete("/subtasks/{taskId}")
+@router.patch("/{taskId}/subtasks/{subtaskId}")
+async def update_subtask(taskId: int, subtaskId: int, body: UpdateTaskRequestBody):
+    try:
+        title, description, is_complete = body
+        return update_subtask_by_id(subtaskId, title, description, is_complete)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.delete("/subtasks/{taskId}", deprecated=True)
 async def delete_subtask(taskId: int):
     try:
         return delete_subtask_by_id(taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.delete("/{taskId}/subtasks/{subtaskId}")
+async def delete_subtask(taskId: int, subtaskId: int):
+    try:
+        return delete_subtask_by_id(subtaskId)
     except Exception as e:
         return JSONResponse(
             status_code=400,
