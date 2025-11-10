@@ -148,7 +148,25 @@ async def delete_task(taskId: int):
         )
 
 
-@router.post("/{taskId}/subtask")
+@router.post("/{taskId}/subtask", deprecated=True)
+async def create_subtask(taskId: int, body: CreateTaskRequestBody):
+    try:
+        title, description = body
+        if not title:
+            return JSONResponse(
+                status_code=400,
+                content={"message": "title is required"},
+            )
+
+        return create_new_subtask(title, description, taskId)
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"message": str(e)},
+        )
+
+
+@router.post("/{taskId}/subtasks")
 async def create_subtask(taskId: int, body: CreateTaskRequestBody):
     try:
         title, description = body
@@ -176,6 +194,7 @@ async def get_subtask(taskId: int):
             content={"message": str(e)},
         )
 
+
 @router.get("/{taskId}/subtasks/{subtaskId}")
 async def get_subtask(taskId: int, subtaskId: int):
     try:
@@ -185,6 +204,7 @@ async def get_subtask(taskId: int, subtaskId: int):
             status_code=400,
             content={"message": str(e)},
         )
+
 
 @router.patch("/subtasks/{taskId}", deprecated=True)
 async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
@@ -197,6 +217,7 @@ async def update_subtask(taskId: int, body: UpdateTaskRequestBody):
             content={"message": str(e)},
         )
 
+
 @router.patch("/{taskId}/subtasks/{subtaskId}")
 async def update_subtask(taskId: int, subtaskId: int, body: UpdateTaskRequestBody):
     try:
@@ -208,6 +229,7 @@ async def update_subtask(taskId: int, subtaskId: int, body: UpdateTaskRequestBod
             content={"message": str(e)},
         )
 
+
 @router.delete("/subtasks/{taskId}", deprecated=True)
 async def delete_subtask(taskId: int):
     try:
@@ -218,6 +240,7 @@ async def delete_subtask(taskId: int):
             content={"message": str(e)},
         )
 
+
 @router.delete("/{taskId}/subtasks/{subtaskId}")
 async def delete_subtask(taskId: int, subtaskId: int):
     try:
@@ -227,6 +250,7 @@ async def delete_subtask(taskId: int, subtaskId: int):
             status_code=400,
             content={"message": str(e)},
         )
+
 
 @router.get("/{taskId}/recommendations")
 async def get_subtask_recommendations(taskId: int):
