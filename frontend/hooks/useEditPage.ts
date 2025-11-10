@@ -109,7 +109,7 @@ const useEditPage = (taskId: number) => {
       // update existing subtasks
       await Promise.all(
         subTasks.map((subtask) =>
-          updateSubTaskById(subtask.id, {
+          updateSubTaskById(task.id, subtask.id, {
             title: subtask.title,
             description: subtask.description,
             is_complete: subtask.isComplete,
@@ -123,7 +123,7 @@ const useEditPage = (taskId: number) => {
           .filter((originalSubtask) =>
             subTasks.every((newSubtask) => originalSubtask.id !== newSubtask.id)
           )
-          .map((subtask) => deleteSubtaskById(subtask.id))
+          .map((subtask) => deleteSubtaskById(task.id, subtask.id))
       );
 
       // create new subtasks
