@@ -32,7 +32,7 @@ const updateTaskById = async (taskId: number, data: any) => {
 };
 
 const createSubTaskForTask = async (parentTaskId: number, data: any) => {
-  const res = await api.post(`${TASKS_API_URL}/${parentTaskId}/subtask`, data);
+  const res = await api.post(`${TASKS_API_URL}/${parentTaskId}/subtasks`, data);
   if (res.status !== 200) {
     throw new Error("Error when creating subtask");
   }
@@ -40,8 +40,15 @@ const createSubTaskForTask = async (parentTaskId: number, data: any) => {
   return res.data;
 };
 
-const updateSubTaskById = async (taskId: number, data: any) => {
-  const res = await api.patch(`${TASKS_API_URL}/subtasks/${taskId}`, data);
+const updateSubTaskById = async (
+  taskId: number,
+  subtaskId: number,
+  data: any
+) => {
+  const res = await api.patch(
+    `${TASKS_API_URL}/${taskId}/subtasks/${subtaskId}`,
+    data
+  );
   if (res.status !== 200) {
     throw new Error("Error when updating subtask");
   }
@@ -49,8 +56,10 @@ const updateSubTaskById = async (taskId: number, data: any) => {
   return res.data;
 };
 
-const deleteSubtaskById = async (taskId: number) => {
-  const res = await api.delete(`${TASKS_API_URL}/subtasks/${taskId}`);
+const deleteSubtaskById = async (taskId: number, subtaskId: number) => {
+  const res = await api.delete(
+    `${TASKS_API_URL}/${taskId}/subtasks/${subtaskId}`
+  );
   if (res.status !== 200) {
     throw new Error("Error when deleting subtask");
   }

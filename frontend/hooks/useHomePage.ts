@@ -69,7 +69,7 @@ const useHomePage = () => {
     value: boolean
   ) => {
     try {
-      await updateSubTaskById(taskId, {
+      await updateSubTaskById(parentTaskId, taskId, {
         is_complete: value,
       });
 
